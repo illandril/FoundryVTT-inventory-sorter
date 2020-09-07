@@ -2,6 +2,19 @@ function caseInsensitiveCompare(a, b) {
   return a.localeCompare(b, undefined, { sensitivity: 'base' });
 }
 
+const TYPE_OFFSETS = {
+  class: 0,
+  feat: 100,
+  weapon: 1000,
+  equipment: 2000,
+  consumable: 3000,
+  tool: 4000,
+  backpack: 5000,
+  loot: 6000,
+  spell: 10000,
+  UNKNOWN: 20000,
+};
+
 function getItemsToSort(actor) {
   const itemsToSort = [];
   actor.data.items.forEach((item) => {
@@ -69,7 +82,9 @@ function sortItems(actor) {
     lastType = item.type;
     lastSubType = item.subtype;
 
-    const newSort = item.subtype * 1000 + nextSort;
+    const typeOffset = TYPE_OFFSETS[lastType] || TYPE_OFFSETS.UNKNOWN;
+    const subtypeOffset = item.subtype * 1000;
+    const newSort = typeOffset + subtypeOffset + nextSort;
     if (item.sort !== newSort) {
       itemUpdates.push({ _id: item._id, sort: newSort });
     }
@@ -79,6 +94,6 @@ function sortItems(actor) {
   }
 }
 
-Hooks.on('renderActorSheet5eCharacter', (actorSheet, html, data) => {
+Hooks.on('renderActorSheet', (actorSheet, html, data) => {
   sortItems(game.actors.get(data.actor._id));
 });
