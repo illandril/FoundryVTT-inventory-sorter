@@ -6,7 +6,7 @@
   "description": "Automatically sorts actors' inventories alphabetically (currently only compatible with the DnD5e system).",
   "author": "Joe Spandrusyszyn",
   "minimumCoreVersion": "0.6.5",
-  "compatibleCoreVersion": "0.6.6",
+  "compatibleCoreVersion": "0.7.6",
   "esmodules": ["./init.js"],
   "license": "./LICENSE",
   "url": "https://github.com/illandril/FoundryVTT-inventory-sorter",
