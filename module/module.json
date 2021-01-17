@@ -1,32 +1,34 @@
 {
-  "name": "illandril-inventory-sorter",
-  "title": "Illandril's Inventory Sorter (5e)",
-  "description": "Automatically sorts actors' inventories alphabetically (currently only compatible with the DnD5e system).",
-  "version": "1.0.1",
-  "library": "false",
-  "manifestPlusVersion": "1.0.0",
-  "minimumCoreVersion": "0.6.5",
-  "compatibleCoreVersion": "0.7.9",
-  "type": "module",
-  "authors": [
-    {
-      "name": "Joe Spandrusyszyn (illandril)",
-      "url": "https://github.com/illandril",
-      "email": "foundry-modules@illandril.net",
-      "discord": "joespan#3152",
-      "reddit": "u/illandril"
-    }
-  ],
-  "dependencies": [],
-  "conflicts": [],
-  "esmodules": ["./init.js"],
-  "styles": [],
-  "languages": [],
-  "license": "./LICENSE",
-  "url": "https://github.com/illandril/FoundryVTT-inventory-sorter",
-  "bugs": "https://github.com/illandril/FoundryVTT-inventory-sorter/issues",
-  "changelog": "https://github.com/illandril/FoundryVTT-inventory-sorter/blob/master/CHANGELOG.md",
-  "manifest": "https://github.com/illandril/FoundryVTT-inventory-sorter/releases/latest/download/module.json",
-  "download": "https://github.com/illandril/FoundryVTT-inventory-sorter/releases/download/v1.0.1/illandril-inventory-sorter.zip",
-  "media": []
+    "name": "illandril-inventory-sorter",
+    "title": "Illandril's Inventory Sorter (5e)",
+    "description": "Automatically sorts actors' inventories alphabetically (currently only compatible with the DnD5e system).",
+    "version": "1.0.2",
+    "library": "false",
+    "manifestPlusVersion": "1.0.0",
+    "minimumCoreVersion": "0.6.5",
+    "compatibleCoreVersion": "0.7.9",
+    "type": "module",
+    "authors": [
+        {
+            "name": "Joe Spandrusyszyn (illandril)",
+            "url": "https://github.com/illandril",
+            "email": "foundry-modules@illandril.net",
+            "discord": "joespan#3152",
+            "reddit": "u/illandril"
+        }
+    ],
+    "dependencies": [],
+    "conflicts": [],
+    "esmodules": [
+        "./init.js"
+    ],
+    "styles": [],
+    "languages": [],
+    "license": "./LICENSE",
+    "url": "https://github.com/illandril/FoundryVTT-inventory-sorter",
+    "bugs": "https://github.com/illandril/FoundryVTT-inventory-sorter/issues",
+    "changelog": "https://github.com/illandril/FoundryVTT-inventory-sorter/blob/master/CHANGELOG.md",
+    "manifest": "https://github.com/illandril/FoundryVTT-inventory-sorter/releases/latest/download/module.json",
+    "download": "https://github.com/illandril/FoundryVTT-inventory-sorter/releases/download/v1.0.2/module.zip",
+    "media": []
 }
