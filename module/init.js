@@ -30,7 +30,7 @@ function getItemsToSort(actor) {
       } else if (prepMode === 'pact') {
         subtype = 12;
       } else {
-        subtype = item.data.level;
+        subtype = parseInt(item.data.level, 10);
       }
     } else if (type === 'feat') {
       if (item.data.activation.type === '') {
@@ -49,6 +49,7 @@ function getItemsToSort(actor) {
       sort: item.sort,
     });
   });
+  console.dir(itemsToSort);
   return itemsToSort;
 }
 
@@ -95,5 +96,5 @@ function sortItems(actor) {
 }
 
 Hooks.on('renderActorSheet', (actorSheet, html, data) => {
-  sortItems(game.actors.get(data.actor._id));
+  sortItems(actorSheet.actor);
 });
