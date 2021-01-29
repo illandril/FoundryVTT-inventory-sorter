@@ -16,13 +16,16 @@ const TYPE_OFFSETS = {
 };
 
 function getItemsToSort(actor) {
+  if (!actor || !actor.data) {
+    return [];
+  }
   const itemsToSort = [];
   actor.data.items.forEach((item) => {
     const type = item.type;
     const name = item.name;
     let subtype = 0;
     if (type === 'spell') {
-      const prepMode = item.data.preparation.mode;
+      const prepMode = item.data.preparation && item.data.preparation.mode;
       if (prepMode === 'atwill') {
         subtype = 10;
       } else if (prepMode === 'innate') {
@@ -30,10 +33,10 @@ function getItemsToSort(actor) {
       } else if (prepMode === 'pact') {
         subtype = 12;
       } else {
-        subtype = parseInt(item.data.level, 10);
+        subtype = parseInt(item.data.level, 10) || 0;
       }
     } else if (type === 'feat') {
-      if (item.data.activation.type === '') {
+      if (!item.data.activation || item.data.activation.type === '') {
         // Passive feats
         subtype = 0;
       } else {
