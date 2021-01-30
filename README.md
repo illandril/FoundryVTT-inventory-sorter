@@ -4,8 +4,6 @@ This is a module for Foundry Virtual Tabletop that automatically sorts all actor
 
 This module currently only supports the DnD5e System.
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O73HF15)
-
 # Installation
 1. Open the Configuration and Setup for your FoundryVTT server
 1. Open the Add-on Modules Tab
