@@ -52,7 +52,6 @@ function getItemsToSort(actor) {
       sort: item.sort,
     });
   });
-  console.dir(itemsToSort);
   return itemsToSort;
 }
 
