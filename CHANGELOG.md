@@ -7,6 +7,7 @@
 **Fixed&nbsp;Bugs**
 
 - Spells not sorting properly [\#3](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/3)
+- Features tab not sorting properly [\#2](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/2)
 
 ## [v1.0.1](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.0.1) (2020-12-20)
 
