@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.0.4](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.0.4) (2021-02-18)
+
+[Full Changelog](https://github.com/illandril/FoundryVTT-inventory-sorter/compare/v1.0.3...v1.0.4)
+
+**Enhancements**
+
+- Add support for Bug Reporter [\#4](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/4)
+
 ## [v1.0.3](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.0.3) (2021-01-31)
 
 [Full Changelog](https://github.com/illandril/FoundryVTT-inventory-sorter/compare/v1.0.2...v1.0.3)
