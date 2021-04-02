@@ -97,6 +97,8 @@ function sortItems(actor) {
   }
 }
 
+const sortItemsDebounced = debounce(sortItems, 200)
+
 Hooks.on('renderActorSheet', (actorSheet, html, data) => {
-  sortItems(actorSheet.actor);
+  sortItemsDebounced(actorSheet.actor);
 });
