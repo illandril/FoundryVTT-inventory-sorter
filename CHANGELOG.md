@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.1.0](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.1.0) (2021-05-29)
+
+[Full Changelog](https://github.com/illandril/FoundryVTT-inventory-sorter/compare/v1.0.5...v1.1.0)
+
+**Other&nbsp;Changes**
+
+- Support Foundry 0.8.x [\#8](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/8)
+
 ## [v1.0.5](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.0.5) (2021-04-02)
 
 [Full Changelog](https://github.com/illandril/FoundryVTT-inventory-sorter/compare/v1.0.4...v1.0.5)
