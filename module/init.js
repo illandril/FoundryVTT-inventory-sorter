@@ -19,7 +19,8 @@ function getItemsToSort(actor) {
   if (!actor || !actor.data) {
     return [];
   }
-  return actor.data.items.map((item) => {
+  return actor.data.items.map((itemEntity) => {
+    const item = itemEntity.data;
     const type = item.type;
     const name = item.name;
     let subtype = 0;
@@ -44,7 +45,7 @@ function getItemsToSort(actor) {
       }
     }
     return {
-      _id: item._id,
+      id: itemEntity.id,
       type: type,
       subtype: subtype,
       name: name,
@@ -86,7 +87,7 @@ function getItemSorts(actor) {
     const typeOffset = TYPE_OFFSETS[lastType] || TYPE_OFFSETS.UNKNOWN;
     const subtypeOffset = item.subtype * 1000;
     const newSort = typeOffset + subtypeOffset + nextSort;
-    itemSorts.set(item._id, { _id: item._id, sort: newSort });
+    itemSorts.set(item.id, { _id: item.id, sort: newSort });
   }
   return itemSorts;
 }
@@ -94,7 +95,7 @@ function getItemSorts(actor) {
 const sortedActors = new Set();
 
 function sortItems(actor) {
-  sortedActors.add(actor._id);
+  sortedActors.add(actor.id);
   const itemSorts = getItemSorts(actor);
   const itemUpdates = [];
   for (const itemSort of itemSorts.values()) {
@@ -104,54 +105,56 @@ function sortItems(actor) {
     }
   }
   if (itemUpdates.length > 0) {
-    actor.updateOwnedItem(itemUpdates, { illandrilInventorySorterUpdate: true });
+    actor.updateEmbeddedDocuments('Item', itemUpdates, { illandrilInventorySorterUpdate: true });
   }
 }
 
 const pendingActorSorts = new Map();
 function delayedSort(actor) {
-  clearTimeout(pendingActorSorts.get(actor._id));
+  clearTimeout(pendingActorSorts.get(actor.id));
   pendingActorSorts.set(
-    actor._id,
+    actor.id,
     setTimeout(() => sortItems(actor), 150)
   );
 }
 
-Hooks.on('preUpdateOwnedItem', (actor, itemData, changes, options) => {
+Hooks.on('preUpdateItem', (item, changes, options, ...args) => {
   if (changes.sort !== undefined) {
     if (!options.illandrilInventorySorterUpdate) {
-      const itemSorts = getItemSorts(actor);
+      const itemSorts = getItemSorts(item.parent);
       const itemSort = itemSorts.get(changes._id);
       changes.sort = itemSort.sort;
     }
-    if (itemData.sort === changes.sort && Object.keys(changes).length === 2) {
+    if (item.sort === changes.sort && Object.keys(changes).length === 2) {
       return false;
     }
   }
 });
 
-Hooks.on('createOwnedItem', (actor, itemData, options, userId) => {
+Hooks.on('createItem', (item, options, userId, ...args) => {
+  console.log('createItem: ' + JSON.stringify({item, options, userId, args}, null, 2));
   if (userId === game.userId) {
-    delayedSort(actor);
+    delayedSort(item.parent);
   }
 });
 
-Hooks.on('deleteOwnedItem', (actor, itemData, options, userId) => {
+Hooks.on('deleteItem', (item, options, userId, ...args) => {
+  console.log('deleteItem: ' + JSON.stringify({item, options, userId, args}, null, 2));
   if (userId === game.userId) {
-    delayedSort(actor);
+    delayedSort(item.parent);
   }
 });
 
-Hooks.on('updateOwnedItem', (actor, itemData, changes, options, userId) => {
+Hooks.on('updateItem', (item, changes, options, userId) => {
   if (userId === game.userId) {
-    delayedSort(actor);
+    delayedSort(item.parent);
   }
 });
 
 Hooks.on('renderActorSheet', (actorSheet) => {
   if (actorSheet.isEditable) {
     const actor = actorSheet.actor;
-    if (!sortedActors.has(actor._id)) {
+    if (!sortedActors.has(actor.id)) {
       delayedSort(actor);
     }
   }
