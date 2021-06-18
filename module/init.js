@@ -132,14 +132,12 @@ Hooks.on('preUpdateItem', (item, changes, options, ...args) => {
 });
 
 Hooks.on('createItem', (item, options, userId, ...args) => {
-  console.log('createItem: ' + JSON.stringify({item, options, userId, args}, null, 2));
   if (userId === game.userId) {
     delayedSort(item.parent);
   }
 });
 
 Hooks.on('deleteItem', (item, options, userId, ...args) => {
-  console.log('deleteItem: ' + JSON.stringify({item, options, userId, args}, null, 2));
   if (userId === game.userId) {
     delayedSort(item.parent);
   }
