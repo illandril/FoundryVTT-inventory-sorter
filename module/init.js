@@ -111,6 +111,9 @@ function sortItems(actor) {
 
 const pendingActorSorts = new Map();
 function delayedSort(actor) {
+  if(!actor) {
+    return;
+  }
   clearTimeout(pendingActorSorts.get(actor.id));
   pendingActorSorts.set(
     actor.id,
