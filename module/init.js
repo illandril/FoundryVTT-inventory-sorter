@@ -1,3 +1,5 @@
+import { log } from './module.js';
+
 function caseInsensitiveCompare(a, b) {
   return a.localeCompare(b, undefined, { sensitivity: 'base' });
 }
@@ -101,10 +103,12 @@ function sortItems(actor) {
   for (const itemSort of itemSorts.values()) {
     const item = actor.items.get(itemSort._id);
     if (item.data.sort !== itemSort.sort) {
+      log.debug('item sort mismatch', { id: item.id, current: item.data.sort, new: itemSort.sort });
       itemUpdates.push(itemSort);
     }
   }
   if (itemUpdates.length > 0) {
+    log.debug('Updating sort for items', itemUpdates)
     actor.updateEmbeddedDocuments('Item', itemUpdates, { illandrilInventorySorterUpdate: true });
   }
 }
@@ -126,7 +130,9 @@ Hooks.on('preUpdateItem', (item, changes, options, ...args) => {
     if (!options.illandrilInventorySorterUpdate) {
       const itemSorts = getItemSorts(item.parent);
       const itemSort = itemSorts.get(changes._id);
-      changes.sort = itemSort.sort;
+      if(itemSort) {
+        changes.sort = itemSort.sort;
+      }
     }
     if (item.sort === changes.sort && Object.keys(changes).length === 2) {
       return false;
@@ -148,7 +154,9 @@ Hooks.on('deleteItem', (item, options, userId, ...args) => {
 
 Hooks.on('updateItem', (item, changes, options, userId) => {
   if (userId === game.userId) {
-    delayedSort(item.parent);
+    if (!options.illandrilInventorySorterUpdate) {
+      delayedSort(item.parent);
+    }
   }
 });
 
