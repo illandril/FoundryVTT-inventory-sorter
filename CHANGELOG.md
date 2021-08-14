@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.1.3](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.1.3) (2021-08-14)
+
+[Full Changelog](https://github.com/illandril/FoundryVTT-inventory-sorter/compare/v1.1.2...v1.1.3)
+
+**Other&nbsp;Changes**
+
+- Sorting gets stuck in infinite loop [\#11](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/11)
+
 ## [v1.1.2](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.1.2) (2021-07-18)
 
 [Full Changelog](https://github.com/illandril/FoundryVTT-inventory-sorter/compare/v1.1.1...v1.1.2)
