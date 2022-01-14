@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.1.4](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.1.4) (2022-01-14)
+
+[Full Changelog](https://github.com/illandril/FoundryVTT-inventory-sorter/compare/v1.1.3...v1.1.4)
+
 ## [v1.1.3](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.1.3) (2021-08-14)
 
 [Full Changelog](https://github.com/illandril/FoundryVTT-inventory-sorter/compare/v1.1.2...v1.1.3)
@@ -16,6 +20,7 @@
 
 - Console logging json of a created or deleted item. [\#10](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/10)
 - Error in console when closing a non-owned item, opened from the Items directory sidebar [\#9](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/9)
+- Features tab not sorting properly [\#2](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/2)
 
 ## [v1.1.1](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.1.1) (2021-06-18)
 
@@ -57,7 +62,6 @@
 **Fixed&nbsp;Bugs**
 
 - Spells not sorting properly [\#3](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/3)
-- Features tab not sorting properly [\#2](https://github.com/illandril/FoundryVTT-inventory-sorter/issues/2)
 
 ## [v1.0.1](https://github.com/illandril/FoundryVTT-inventory-sorter/tree/v1.0.1) (2020-12-20)
 
