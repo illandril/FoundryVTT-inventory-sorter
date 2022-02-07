@@ -2,7 +2,7 @@ export const KEY = 'illandril-inventory-sorter';
 export const NAME = "Illandril's Inventory Sorter";
 
 const _log = (logFN, ...args) => {
-  logFN.apply(console, [`%c${NAME} |`, 'color: rgba(0,0,0,0.5);', ...args]);
+  logFN.apply(console, [`%c${NAME} |`, 'background-color: #4f0104; color: #fff; padding: 0.1em 0.5em;', ...args]);
 };
 
 export const log = {
