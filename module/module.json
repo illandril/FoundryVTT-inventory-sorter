@@ -2,7 +2,7 @@
     "id": "illandril-inventory-sorter",
     "title": "Illandril's Inventory Sorter (5e)",
     "description": "Automatically sorts actors' inventories alphabetically (currently only compatible with the DnD5e system).",
-    "version": "1.1.4",
+    "version": "2.0.0",
     "library": "false",
     "manifestPlusVersion": "1.2.0",
     "compatibility": {
@@ -45,6 +45,6 @@
     },
     "changelog": "https://github.com/illandril/FoundryVTT-inventory-sorter/blob/master/CHANGELOG.md",
     "manifest": "https://github.com/illandril/FoundryVTT-inventory-sorter/releases/latest/download/module.json",
-    "download": "https://github.com/illandril/FoundryVTT-inventory-sorter/releases/download/v1.1.4/module.zip",
+    "download": "https://github.com/illandril/FoundryVTT-inventory-sorter/releases/download/v2.0.0/module.zip",
     "media": []
 }
