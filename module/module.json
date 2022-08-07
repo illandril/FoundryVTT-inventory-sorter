@@ -1,14 +1,15 @@
 {
-    "name": "illandril-inventory-sorter",
+    "id": "illandril-inventory-sorter",
     "title": "Illandril's Inventory Sorter (5e)",
     "description": "Automatically sorts actors' inventories alphabetically (currently only compatible with the DnD5e system).",
     "version": "1.1.4",
     "library": "false",
     "manifestPlusVersion": "1.2.0",
-    "minimumCoreVersion": "0.8.5",
-    "compatibleCoreVersion": "9",
+    "compatibility": {
+        "minimum": 10,
+        "verified": 10
+    },
     "type": "module",
-    "author": "Joe Spandrusyszyn (illandril)",
     "authors": [
         {
             "name": "Joe Spandrusyszyn (illandril)",
@@ -20,9 +21,17 @@
             "reddit": "u/illandril"
         }
     ],
-    "dependencies": [],
-    "system": "dnd5e",
-    "conflicts": [],
+    "relationships": {
+        "systems": [
+            {
+                "id": "dnd5e",
+                "type": "system",
+                "compatibility": {
+                    "verified": "1.6.3"
+                }
+            }
+        ]
+    },
     "esmodules": [
         "./init.js"
     ],

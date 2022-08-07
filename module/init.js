@@ -18,16 +18,15 @@ const TYPE_OFFSETS = {
 };
 
 function getItemsToSort(actor) {
-  if (!actor || !actor.data) {
+  if (!actor) {
     return [];
   }
-  return actor.data.items.map((itemEntity) => {
-    const item = itemEntity.data;
+  return actor.items.map((item) => {
     const type = item.type;
     const name = item.name;
     let subtype = 0;
     if (type === 'spell') {
-      const prepMode = item.data.preparation && item.data.preparation.mode;
+      const prepMode = item.preparation && item.preparation.mode;
       if (prepMode === 'atwill') {
         subtype = 10;
       } else if (prepMode === 'innate') {
@@ -35,10 +34,10 @@ function getItemsToSort(actor) {
       } else if (prepMode === 'pact') {
         subtype = 12;
       } else {
-        subtype = parseInt(item.data.level, 10) || 0;
+        subtype = parseInt(item.level, 10) || 0;
       }
     } else if (type === 'feat') {
-      if (!item.data.activation || item.data.activation.type === '') {
+      if (!item.activation || item.activation.type === '') {
         // Passive feats
         subtype = 0;
       } else {
@@ -47,7 +46,7 @@ function getItemsToSort(actor) {
       }
     }
     return {
-      id: itemEntity.id,
+      id: item.id,
       type: type,
       subtype: subtype,
       name: name,
@@ -102,8 +101,8 @@ function sortItems(actor) {
   const itemUpdates = [];
   for (const itemSort of itemSorts.values()) {
     const item = actor.items.get(itemSort._id);
-    if (item.data.sort !== itemSort.sort) {
-      log.debug('item sort mismatch', { id: item.id, current: item.data.sort, new: itemSort.sort });
+    if (item.sort !== itemSort.sort) {
+      log.debug('item sort mismatch', { id: item.id, current: item.sort, new: itemSort.sort });
       itemUpdates.push(itemSort);
     }
   }
