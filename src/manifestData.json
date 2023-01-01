@@ -1,0 +1,22 @@
+{
+  "compatibility": {
+    "minimum": 10,
+    "verified": 10
+  },
+  "esmodules": [
+    "module.js"
+  ],
+  "relationships": {
+    "systems": [
+        {
+            "id": "dnd5e",
+            "type": "system",
+            "compatibility": {
+                "verified": "2.0.3"
+            }
+        }
+    ]
+  },
+  "license": "LICENSE",
+  "media": []
+}
