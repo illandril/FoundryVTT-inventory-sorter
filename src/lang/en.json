@@ -1,0 +1,10 @@
+{
+  "illandril-inventory-sorter": {
+    "setting": {
+      "debug": {
+        "label": "Debug Mode",
+        "hint": "Leave this disabled unless specifically asked to enable it by Illandril (otherwise, it will slow things down)."
+      }
+    }
+  }
+}

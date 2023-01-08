@@ -27,6 +27,7 @@ export default {
     copy({
       targets: [
         { src: 'LICENSE', dest: target },
+        { src: 'src/lang', dest: target },
       ],
     }),
     {
