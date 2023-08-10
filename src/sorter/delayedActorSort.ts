@@ -1,6 +1,6 @@
 import sortActorItems from './sortActorItems';
 
-const pendingActorSorts = new Map<string, number>();
+const pendingActorSorts = new Map<string, ReturnType<typeof setTimeout>>();
 
 const delayedActorSort = (actor: dnd5e.documents.Actor5e | null) => {
   if (!actor) {
