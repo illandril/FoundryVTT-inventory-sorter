@@ -1,13 +1,20 @@
+import module from '../module';
+import compareStringCaseInsensitive from './compareStringCaseInsensitive';
+
+export const SortFeatsByRequirement = module.settings.register('sortFeatsByRequirement', Boolean, false, { hasHint: true });
+
 type ItemSortDetails = {
   id: string
   group: string
   name: string
+  alternateSort: string
 };
-
-const compareStringCaseInsensitive = (strA: string, strB: string) => strA.localeCompare(strB, undefined, { sensitivity: 'base' });
 
 const compareItemToSort = (itemA: ItemSortDetails, itemB: ItemSortDetails) => {
   let compare = compareStringCaseInsensitive(itemA.group, itemB.group);
+  if (compare === 0) {
+    compare = compareStringCaseInsensitive(itemA.alternateSort, itemB.alternateSort);
+  }
   if (compare === 0) {
     compare = compareStringCaseInsensitive(itemA.name, itemB.name);
   }
@@ -25,7 +32,7 @@ const getSpellSubtype = (system: dnd5e.documents.ItemSystemData.Spell) => {
   return subtype;
 };
 
-const getFeatSubtype = (system: dnd5e.documents.ItemSystemData.Feat) => {
+const getFeatSortDetails = (system: dnd5e.documents.ItemSystemData.Feat) => {
   let subtype: string;
   if (!system.activation || !system.activation.type) {
     // Passive feats
@@ -34,7 +41,11 @@ const getFeatSubtype = (system: dnd5e.documents.ItemSystemData.Feat) => {
     // Active feats
     subtype = 'active';
   }
-  return subtype;
+  let alternateSort: string | undefined;
+  if (SortFeatsByRequirement.get()) {
+    alternateSort = system.requirements;
+  }
+  return { subtype, alternateSort };
 };
 
 const extractSortInformation = (items: foundry.utils.Collection<string, dnd5e.documents.Item5e>): ItemSortDetails[] => {
@@ -45,15 +56,19 @@ const extractSortInformation = (items: foundry.utils.Collection<string, dnd5e.do
     const type = item.type;
     const name = item.name;
     let subtype: string | undefined;
+    let alternateSort: string | undefined;
     if (type === 'spell') {
       subtype = getSpellSubtype(item.system as dnd5e.documents.ItemSystemData.Spell);
     } else if (type === 'feat') {
-      subtype = getFeatSubtype(item.system as dnd5e.documents.ItemSystemData.Feat);
+      const featDetails = getFeatSortDetails(item.system as dnd5e.documents.ItemSystemData.Feat);
+      subtype = featDetails.subtype;
+      alternateSort = featDetails.alternateSort;
     }
     return {
       id: item.id,
       group: subtype ? `${type}_${subtype}` : type,
       name: name,
+      alternateSort: alternateSort ?? '',
     };
   });
 

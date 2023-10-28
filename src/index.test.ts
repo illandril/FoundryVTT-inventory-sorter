@@ -3,18 +3,26 @@ import { ItemSort } from './sorter/calculateItemSorts';
 let delayedActorSort: jest.SpiedFunction<typeof import('./sorter/delayedActorSort').default>;
 let calculateItemSorts: jest.SpiedFunction<typeof import('./sorter/calculateItemSorts').default>;
 let hasActorBeenSorted: jest.SpiedFunction<typeof import('./sorter/sortActorItems').hasActorBeenSorted>;
-beforeEach(async () => {
-  const delayedActorSortModule = await import('./sorter/delayedActorSort');
-  delayedActorSort = jest.spyOn(delayedActorSortModule, 'default').mockImplementation();
 
-  const calculateItemSortsModule = await import('./sorter/calculateItemSorts');
-  calculateItemSorts = jest.spyOn(calculateItemSortsModule, 'default').mockImplementation();
+beforeAll(async () => {
+  delayedActorSort = jest.spyOn(
+    await import('./sorter/delayedActorSort'),
+    'default',
+  ).mockReturnValue();
 
-  const sortActorItemsModule = await import('./sorter/sortActorItems');
-  hasActorBeenSorted = jest.spyOn(sortActorItemsModule, 'hasActorBeenSorted').mockImplementation();
+  calculateItemSorts = jest.spyOn(
+    await import('./sorter/calculateItemSorts'),
+    'default',
+  ).mockReturnValue(new Map());
+
+  hasActorBeenSorted = jest.spyOn(
+    await import('./sorter/sortActorItems'),
+    'hasActorBeenSorted',
+  ).mockReturnValue(false);
 
   await import('./index');
-  jest.resetModules();
+
+  Hooks.callAll('init');
 });
 
 describe('renderActorSheet', () => {

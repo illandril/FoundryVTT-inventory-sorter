@@ -11,11 +11,7 @@
         ]
       }
     }],
-    ["@babel/preset-typescript"],
-    ["minify", {
-      "builtIns": false,
-      "mangle": true
-    }]
+    ["@babel/preset-typescript"]
   ],
   "comments": false
 }

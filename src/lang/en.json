@@ -4,6 +4,10 @@
       "debug": {
         "label": "Debug Mode",
         "hint": "Leave this disabled unless specifically asked to enable it by Illandril (otherwise, it will slow things down)."
+      },
+      "sortFeatsByRequirement": {
+        "label": "Sort Features by Requirement",
+        "hint": "Features are sorted by Requirement first, with a secondary sort on Name, so features that come from the same source (class, race, etc) are grouped together. Note: Actor sheets that you have already opened will not automatically re-sort. Refresh your browser window and re-open the Actor's sheet to re-sort after changing this setting."
       }
     }
   }

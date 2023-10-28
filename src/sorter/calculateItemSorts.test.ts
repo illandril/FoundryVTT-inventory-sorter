@@ -1,6 +1,15 @@
 import * as spells from '../tests/data/spells';
 import { mockActor, mockItem } from '../tests/mockHelpers';
 import calculateItemSorts from './calculateItemSorts';
+import { SortFeatsByRequirement } from './extractSortInformation';
+
+beforeAll(() => {
+  Hooks.callAll('init');
+});
+
+beforeEach(() => {
+  SortFeatsByRequirement.set(false);
+});
 
 describe('calculateItemSorts()', () => {
   it('returns an empty map for a null actor', () => {
@@ -141,7 +150,8 @@ describe('calculateItemSorts()', () => {
     expect(itemSorts.size).toBe(12);
   });
 
-  it('sorts feats into groups correctly', () => {
+  it('sorts feats into groups correctly (SortFeatsByRequirement = false)', () => {
+    SortFeatsByRequirement.set(false);
     const actor = mockActor([
       mockItem({
         id: '9i6tT2SYxq5Xegzu',
@@ -151,6 +161,7 @@ describe('calculateItemSorts()', () => {
           activation: {
             type: 'action',
           },
+          requirements: 'Dragonborn',
         },
       }),
       mockItem({
@@ -161,6 +172,7 @@ describe('calculateItemSorts()', () => {
           activation: {
             type: 'bonus',
           },
+          requirements: 'Bard 1',
         },
       }),
       mockItem({
@@ -171,6 +183,7 @@ describe('calculateItemSorts()', () => {
           activation: {
             type: '',
           },
+          requirements: 'Bard 1',
         },
       }),
       mockItem({
@@ -181,6 +194,7 @@ describe('calculateItemSorts()', () => {
           activation: {
             type: 'special',
           },
+          requirements: 'Bard 2',
         },
       }),
       mockItem({
@@ -191,13 +205,16 @@ describe('calculateItemSorts()', () => {
           activation: {
             type: undefined,
           },
+          requirements: 'Bard 3',
         },
       }),
       mockItem({
         id: 'LIuSL9KNd9fP2gJ5',
         name: 'Expertise (Bard)',
         type: 'feat',
-        system: {},
+        system: {
+          requirements: 'Bard 3',
+        },
       }),
     ]);
 
@@ -212,6 +229,89 @@ describe('calculateItemSorts()', () => {
     expect(itemSorts.get('ZjSZ49o8HfrD71qM')?.sort).toBe(100000); // Bard College
     expect(itemSorts.get('LIuSL9KNd9fP2gJ5')?.sort).toBe(200000); // Expertise (Bard)
     expect(itemSorts.get('L1PmYKzM0AkYtFKB')?.sort).toBe(300000); // Spellcasting (Bard)
+
+    expect(itemSorts.size).toBe(6);
+  });
+
+  it('sorts feats into groups correctly (SortFeatsByRequirement = true)', () => {
+    SortFeatsByRequirement.set(true);
+    const actor = mockActor([
+      mockItem({
+        id: '9i6tT2SYxq5Xegzu',
+        name: 'Breath Weapon',
+        type: 'feat',
+        system: {
+          activation: {
+            type: 'action',
+          },
+          requirements: 'Dragonborn',
+        },
+      }),
+      mockItem({
+        id: 'WynbxDC89Wp0PODY',
+        name: 'Bardic Inspiration',
+        type: 'feat',
+        system: {
+          activation: {
+            type: 'bonus',
+          },
+          requirements: 'Bard 1',
+        },
+      }),
+      mockItem({
+        id: 'L1PmYKzM0AkYtFKB',
+        name: 'Spellcasting (Bard)',
+        type: 'feat',
+        system: {
+          activation: {
+            type: '',
+          },
+          requirements: 'Bard 1',
+        },
+      }),
+      mockItem({
+        id: 'TxjrqhRqn2861xv9',
+        name: 'Song of Rest',
+        type: 'feat',
+        system: {
+          activation: {
+            type: 'special',
+          },
+          requirements: 'Bard 2',
+        },
+      }),
+      mockItem({
+        id: 'ZjSZ49o8HfrD71qM',
+        name: 'Bard College',
+        type: 'feat',
+        system: {
+          activation: {
+            type: undefined,
+          },
+          requirements: 'Bard 3',
+        },
+      }),
+      mockItem({
+        id: 'LIuSL9KNd9fP2gJ5',
+        name: 'Expertise (Bard)',
+        type: 'feat',
+        system: {
+          requirements: 'Bard 3',
+        },
+      }),
+    ]);
+
+    const itemSorts = calculateItemSorts(actor);
+
+    // Active Abilities
+    expect(itemSorts.get('WynbxDC89Wp0PODY')?.sort).toBe(100000); // (Bard 1) Bardic Inspiration
+    expect(itemSorts.get('TxjrqhRqn2861xv9')?.sort).toBe(200000); // (Bard 2) Song of Rest
+    expect(itemSorts.get('9i6tT2SYxq5Xegzu')?.sort).toBe(300000); // (Dragonborn) Breath Weapon
+
+    // Passive Abilities
+    expect(itemSorts.get('L1PmYKzM0AkYtFKB')?.sort).toBe(100000); // (Bard 1) Spellcasting (Bard)
+    expect(itemSorts.get('ZjSZ49o8HfrD71qM')?.sort).toBe(200000); // (Bard 3) Bard College
+    expect(itemSorts.get('LIuSL9KNd9fP2gJ5')?.sort).toBe(300000); // (Bard 3) Expertise (Bard)
 
     expect(itemSorts.size).toBe(6);
   });

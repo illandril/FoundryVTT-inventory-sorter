@@ -2,6 +2,7 @@
 import * as Manifest from '@illandril/foundryvtt-utils/dist/Manifest.js';
 import { babel } from '@rollup/plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import terser from '@rollup/plugin-terser';
 import fs from 'fs-extra';
 import copy from 'rollup-plugin-copy';
 import globals, { description, repositoryURL } from './globals.js';
@@ -24,6 +25,7 @@ export default {
       babelHelpers: 'bundled',
       extensions: ['.js', '.ts'],
     }),
+    terser(),
     copy({
       targets: [
         { src: 'LICENSE', dest: target },
