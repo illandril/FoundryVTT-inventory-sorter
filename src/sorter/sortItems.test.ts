@@ -22,7 +22,7 @@ it('should return a sorted copy without modifying the input', () => {
   expect(actual).toEqual(expected);
 });
 
-it.each(['name', 'group', 'alternateSort'])('sorts by %s when all other values are the same', (key) => {
+it.each(['name', 'group', 'alternateSort', 'id'])('sorts by %s when all other values are the same', (key) => {
   const uniqueValues = ['Bravo', 'Charlie', 'Alpha'];
   const input = [
     {
