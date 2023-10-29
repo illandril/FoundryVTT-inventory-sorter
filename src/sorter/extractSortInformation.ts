@@ -1,25 +1,7 @@
 import module from '../module';
-import compareStringCaseInsensitive from './compareStringCaseInsensitive';
+import sortItems, { ItemSortDetails, SortedItemDetails } from './sortItems';
 
 export const SortFeatsByRequirement = module.settings.register('sortFeatsByRequirement', Boolean, false, { hasHint: true });
-
-type ItemSortDetails = {
-  id: string
-  group: string
-  name: string
-  alternateSort: string
-};
-
-const compareItemToSort = (itemA: ItemSortDetails, itemB: ItemSortDetails) => {
-  let compare = compareStringCaseInsensitive(itemA.group, itemB.group);
-  if (compare === 0) {
-    compare = compareStringCaseInsensitive(itemA.alternateSort, itemB.alternateSort);
-  }
-  if (compare === 0) {
-    compare = compareStringCaseInsensitive(itemA.name, itemB.name);
-  }
-  return compare;
-};
 
 const getSpellSubtype = (system: dnd5e.documents.ItemSystemData.Spell) => {
   const prepMode = system.preparation?.mode;
@@ -48,7 +30,7 @@ const getFeatSortDetails = (system: dnd5e.documents.ItemSystemData.Feat) => {
   return { subtype, alternateSort };
 };
 
-const extractSortInformation = (items: foundry.utils.Collection<string, dnd5e.documents.Item5e>): ItemSortDetails[] => {
+const extractSortInformation = (items: foundry.utils.Collection<string, dnd5e.documents.Item5e>): SortedItemDetails[] => {
   if (!items) {
     return [];
   }
@@ -72,7 +54,7 @@ const extractSortInformation = (items: foundry.utils.Collection<string, dnd5e.do
     };
   });
 
-  return unsortedItems.sort(compareItemToSort);
+  return sortItems(unsortedItems);
 };
 
 export default extractSortInformation;
