@@ -48,8 +48,8 @@ describe('sortActorItems()', () => {
 
     await sortActorItems(actor);
 
-    expect(updateEmbeddedDocuments).toBeCalledTimes(1);
-    expect(updateEmbeddedDocuments).toBeCalledWith('Item', expect.any(Array), {
+    expect(updateEmbeddedDocuments).toHaveBeenCalledTimes(1);
+    expect(updateEmbeddedDocuments).toHaveBeenCalledWith('Item', expect.any(Array), {
       illandrilInventorySorterUpdate: true,
     });
     expect(updateEmbeddedDocuments.mock.calls[0][1]).toHaveLength(2);
@@ -78,7 +78,7 @@ describe('sortActorItems()', () => {
 
     await sortActorItems(actor);
 
-    expect(updateEmbeddedDocuments).not.toBeCalled();
+    expect(updateEmbeddedDocuments).not.toHaveBeenCalled();
   });
 
   it('logs an error if updateEmbeddedDocuments throws', async () => {
@@ -102,8 +102,8 @@ describe('sortActorItems()', () => {
 
     await sortActorItems(actor);
 
-    expect(errorSpy).toBeCalledTimes(1);
-    expect(errorSpy).toBeCalledWith(
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(
       expect.stringMatching(/Illandril's Inventory Sorter/),
       expect.stringMatching(/background-color/),
       'Error updating items for actor',

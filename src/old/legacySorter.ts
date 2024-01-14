@@ -1,3 +1,4 @@
+import forEachOpenSheet from '../forEachOpenSheet';
 import module from '../module';
 import { EnableLegacySorter, registerLegacySettingCallback } from '../settings';
 import calculateItemSorts from './calculateItemSorts';
@@ -83,11 +84,7 @@ const sortOpenActorSheets = () => {
     // Legacy sort is off - nothing for us to do
     return;
   }
-  for (const window of Object.values((ui as unknown as { windows: Record<string, Application | undefined> }).windows)) {
-    if (window?.rendered && window instanceof ActorSheet) {
-      sortActorSheet(window as ActorSheet<dnd5e.documents.Actor5e>);
-    }
-  }
+  forEachOpenSheet(sortActorSheet);
 };
 
 registerLegacySettingCallback(sortOpenActorSheets);

@@ -7,7 +7,7 @@ export const registerSettingCallback = (callback: () => void) => {
 
 const legacyCallbacks: (() => void)[] = [];
 export const registerLegacySettingCallback = (callback: () => void) => {
-  callbacks.push(callback);
+  legacyCallbacks.push(callback);
 };
 const onChange = () => {
   for (const callback of callbacks) {

@@ -1,7 +1,12 @@
 import module from '../module';
+import { registerLegacySettingCallback } from '../settings';
 import calculateItemSorts from './calculateItemSorts';
 
 const sortedActors = new Set<string>();
+
+registerLegacySettingCallback(() => {
+  sortedActors.clear();
+});
 
 const sortActorItems = async (actor: dnd5e.documents.Actor5e) => {
   sortedActors.add(actor.id);

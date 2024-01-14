@@ -1,28 +1,40 @@
-import { ItemSort } from './sorter/calculateItemSorts';
+import { ItemSort } from './calculateItemSorts';
 
-let delayedActorSort: jest.SpiedFunction<typeof import('./sorter/delayedActorSort').default>;
-let calculateItemSorts: jest.SpiedFunction<typeof import('./sorter/calculateItemSorts').default>;
-let hasActorBeenSorted: jest.SpiedFunction<typeof import('./sorter/sortActorItems').hasActorBeenSorted>;
+let delayedActorSort: jest.SpiedFunction<typeof import('./delayedActorSort').default>;
+let calculateItemSorts: jest.SpiedFunction<typeof import('./calculateItemSorts').default>;
+let hasActorBeenSorted: jest.SpiedFunction<typeof import('./sortActorItems').hasActorBeenSorted>;
+let LegacySortFeatsByRequirement: typeof import('../settings').LegacySortFeatsByRequirement;
+let forEachOpenSheet: jest.SpiedFunction<typeof import('../forEachOpenSheet').default>;
 
 beforeAll(async () => {
   delayedActorSort = jest.spyOn(
-    await import('./sorter/delayedActorSort'),
+    await import('./delayedActorSort'),
     'default',
   ).mockReturnValue();
 
   calculateItemSorts = jest.spyOn(
-    await import('./sorter/calculateItemSorts'),
+    await import('./calculateItemSorts'),
     'default',
   ).mockReturnValue(new Map());
 
   hasActorBeenSorted = jest.spyOn(
-    await import('./sorter/sortActorItems'),
+    await import('./sortActorItems'),
     'hasActorBeenSorted',
   ).mockReturnValue(false);
 
-  await import('./index');
+  forEachOpenSheet = jest.spyOn(await import('../forEachOpenSheet'), 'default').mockImplementation();
+
+  SIMULATE.mockSavedSetting('illandril-inventory-sorter', 'enableLegacySorter', true);
+
+  await import('./legacySorter');
+
+  LegacySortFeatsByRequirement = (await import('../settings')).LegacySortFeatsByRequirement;
 
   Hooks.callAll('init');
+});
+
+beforeEach(() => {
+  forEachOpenSheet.mockImplementation(() => undefined);
 });
 
 describe('renderActorSheet', () => {
@@ -35,15 +47,15 @@ describe('renderActorSheet', () => {
     } as ActorSheet;
     const element = {} as JQuery;
 
-    expect(delayedActorSort).not.toBeCalled();
-    expect(hasActorBeenSorted).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
+    expect(hasActorBeenSorted).not.toHaveBeenCalled();
 
     Hooks.callAll('renderActorSheet', actorSheet, element);
 
-    expect(hasActorBeenSorted).toBeCalledTimes(1);
-    expect(hasActorBeenSorted).toBeCalledWith(actor);
-    expect(delayedActorSort).toBeCalledTimes(1);
-    expect(delayedActorSort).toBeCalledWith(actor);
+    expect(hasActorBeenSorted).toHaveBeenCalledTimes(1);
+    expect(hasActorBeenSorted).toHaveBeenCalledWith(actor);
+    expect(delayedActorSort).toHaveBeenCalledTimes(1);
+    expect(delayedActorSort).toHaveBeenCalledWith(actor);
   });
 
   it('does not call delayedActorSort if the actor has been sorted', () => {
@@ -55,14 +67,14 @@ describe('renderActorSheet', () => {
     } as ActorSheet;
     const element = {} as JQuery;
 
-    expect(delayedActorSort).not.toBeCalled();
-    expect(hasActorBeenSorted).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
+    expect(hasActorBeenSorted).not.toHaveBeenCalled();
 
     Hooks.callAll('renderActorSheet', actorSheet, element);
 
-    expect(hasActorBeenSorted).toBeCalledTimes(1);
-    expect(hasActorBeenSorted).toBeCalledWith(actor);
-    expect(delayedActorSort).not.toBeCalled();
+    expect(hasActorBeenSorted).toHaveBeenCalledTimes(1);
+    expect(hasActorBeenSorted).toHaveBeenCalledWith(actor);
+    expect(delayedActorSort).not.toHaveBeenCalled();
   });
 
   it('does not call delayedActorSort if the actorSheet is not editable', () => {
@@ -76,8 +88,8 @@ describe('renderActorSheet', () => {
 
     Hooks.callAll('renderActorSheet', actorSheet, element);
 
-    expect(delayedActorSort).not.toBeCalled();
-    expect(hasActorBeenSorted).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
+    expect(hasActorBeenSorted).not.toHaveBeenCalled();
   });
 });
 
@@ -88,12 +100,12 @@ describe.each(['createItem', 'deleteItem'] as const)('%s', (hookName) => {
       actor,
     } as dnd5e.documents.Item5e;
 
-    expect(delayedActorSort).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
 
     Hooks.callAll(hookName, item, {}, 'mock-user-id');
 
-    expect(delayedActorSort).toBeCalledTimes(1);
-    expect(delayedActorSort).toBeCalledWith(actor);
+    expect(delayedActorSort).toHaveBeenCalledTimes(1);
+    expect(delayedActorSort).toHaveBeenCalledWith(actor);
   });
 
   it('does not call delayedActorSort if the change was made by a different user', () => {
@@ -104,7 +116,7 @@ describe.each(['createItem', 'deleteItem'] as const)('%s', (hookName) => {
 
     Hooks.callAll(hookName, item, {}, 'other-user-id');
 
-    expect(delayedActorSort).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
   });
 });
 
@@ -115,12 +127,12 @@ describe('updateItem', () => {
       actor,
     } as dnd5e.documents.Item5e;
 
-    expect(delayedActorSort).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
 
     Hooks.callAll('updateItem', item, {}, {}, 'mock-user-id');
 
-    expect(delayedActorSort).toBeCalledTimes(1);
-    expect(delayedActorSort).toBeCalledWith(actor);
+    expect(delayedActorSort).toHaveBeenCalledTimes(1);
+    expect(delayedActorSort).toHaveBeenCalledWith(actor);
   });
 
   it('does not call delayedActorSort if the change was made by a different user', () => {
@@ -131,7 +143,7 @@ describe('updateItem', () => {
 
     Hooks.callAll('updateItem', item, {}, {}, 'other-user-id');
 
-    expect(delayedActorSort).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
   });
 
   it('does not call delayedActorSort if the change was made by this module', () => {
@@ -140,11 +152,11 @@ describe('updateItem', () => {
       actor,
     } as dnd5e.documents.Item5e;
 
-    expect(delayedActorSort).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
 
     Hooks.callAll('updateItem', item, {}, { illandrilInventorySorterUpdate: true }, 'mock-user-id');
 
-    expect(delayedActorSort).not.toBeCalled();
+    expect(delayedActorSort).not.toHaveBeenCalled();
   });
 });
 
@@ -166,7 +178,7 @@ describe('preUpdateItem', () => {
     const value = Hooks.call('preUpdateItem', item, changes, {});
 
     expect(value).toBe(true);
-    expect(calculateItemSorts).not.toBeCalled();
+    expect(calculateItemSorts).not.toHaveBeenCalled();
     expect(changes).toEqual({
       _id: '1CtCRdorXj0Wv58v',
       name: 'Bravo',
@@ -192,13 +204,13 @@ describe('preUpdateItem', () => {
     const value = Hooks.call('preUpdateItem', item, changes, {});
 
     expect(value).toBe(true);
-    expect(calculateItemSorts).not.toBeCalled();
+    expect(calculateItemSorts).not.toHaveBeenCalled();
     expect(changes).toEqual({
       name: 'Bravo',
       sort: 50000,
     });
-    expect(errorSpy).toBeCalledTimes(1);
-    expect(errorSpy).toBeCalledWith(
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith(
       expect.stringMatching(/Illandril's Inventory Sorter/),
       expect.stringMatching(/background-color/),
       'preUpdateItem hook was called with no _id',
@@ -229,7 +241,7 @@ describe('preUpdateItem', () => {
     const value = Hooks.call('preUpdateItem', item, changes, {});
 
     expect(value).toBe(true);
-    expect(calculateItemSorts).toBeCalledWith(actor);
+    expect(calculateItemSorts).toHaveBeenCalledWith(actor);
     expect(changes).toEqual({
       _id: '1CtCRdorXj0Wv58v',
       sort: 30000,
@@ -259,7 +271,7 @@ describe('preUpdateItem', () => {
     const value = Hooks.call('preUpdateItem', item, changes, {});
 
     expect(value).toBe(true);
-    expect(calculateItemSorts).toBeCalledWith(actor);
+    expect(calculateItemSorts).toHaveBeenCalledWith(actor);
     expect(changes).toEqual({
       _id: '1CtCRdorXj0Wv58v',
       sort: 50000,
@@ -287,7 +299,7 @@ describe('preUpdateItem', () => {
       _id: '1CtCRdorXj0Wv58v',
       sort: 50000,
     });
-    expect(calculateItemSorts).not.toBeCalled();
+    expect(calculateItemSorts).not.toHaveBeenCalled();
   });
 
   it('returns true if the fixed sort is current sort and there are other changes', () => {
@@ -314,7 +326,7 @@ describe('preUpdateItem', () => {
     const value = Hooks.call('preUpdateItem', item, changes, {});
 
     expect(value).toBe(true);
-    expect(calculateItemSorts).toBeCalledWith(actor);
+    expect(calculateItemSorts).toHaveBeenCalledWith(actor);
     expect(changes).toEqual({
       _id: '1CtCRdorXj0Wv58v',
       name: 'Bravo',
@@ -345,10 +357,59 @@ describe('preUpdateItem', () => {
     const value = Hooks.call('preUpdateItem', item, changes, {});
 
     expect(value).toBe(false);
-    expect(calculateItemSorts).toBeCalledWith(actor);
+    expect(calculateItemSorts).toHaveBeenCalledWith(actor);
     expect(changes).toEqual({
       _id: '1CtCRdorXj0Wv58v',
       sort: 30000,
     });
   });
+});
+
+it('refreshes the sort on any open actor sheets when changing LegacySortFeatsByRequirement', () => {
+  LegacySortFeatsByRequirement.set(false);
+
+  const actor1 = {
+    id: 'pb0HcmClJ3fSyy6k',
+  } as dnd5e.documents.Actor5e;
+  const actor2 = {
+    id: 'Xa0NzE8I9oEtL4bb',
+  } as dnd5e.documents.Actor5e;
+  const actor3 = {
+    id: '8yKqiQXRS2aoF5mM',
+  } as dnd5e.documents.Actor5e;
+  forEachOpenSheet.mockImplementation((callback) => {
+    callback({
+      isEditable: true,
+      actor: actor1,
+    } as ActorSheet<dnd5e.documents.Actor5e>);
+    callback({
+      isEditable: false,
+      actor: actor2,
+    } as ActorSheet<dnd5e.documents.Actor5e>);
+    callback({
+      isEditable: true,
+      actor: actor3,
+    } as ActorSheet<dnd5e.documents.Actor5e>);
+  });
+
+  expect(delayedActorSort).not.toHaveBeenCalled();
+  expect(hasActorBeenSorted).not.toHaveBeenCalled();
+
+  LegacySortFeatsByRequirement.set(true);
+
+  expect(hasActorBeenSorted).toHaveBeenCalledTimes(2);
+  expect(hasActorBeenSorted).toHaveBeenNthCalledWith(1, actor1);
+  expect(hasActorBeenSorted).toHaveBeenNthCalledWith(2, actor3);
+  expect(delayedActorSort).toHaveBeenCalledTimes(2);
+  expect(delayedActorSort).toHaveBeenNthCalledWith(1, actor1);
+  expect(delayedActorSort).toHaveBeenNthCalledWith(2, actor3);
+
+  LegacySortFeatsByRequirement.set(false);
+
+  expect(hasActorBeenSorted).toHaveBeenCalledTimes(4);
+  expect(hasActorBeenSorted).toHaveBeenNthCalledWith(3, actor1);
+  expect(hasActorBeenSorted).toHaveBeenNthCalledWith(4, actor3);
+  expect(delayedActorSort).toHaveBeenCalledTimes(4);
+  expect(delayedActorSort).toHaveBeenNthCalledWith(3, actor1);
+  expect(delayedActorSort).toHaveBeenNthCalledWith(4, actor3);
 });

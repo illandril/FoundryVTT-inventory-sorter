@@ -11,7 +11,7 @@ describe('delayedActorSort', () => {
 
     jest.advanceTimersByTime(150);
 
-    expect(sortActorItems).toBeCalledTimes(0);
+    expect(sortActorItems).toHaveBeenCalledTimes(0);
   });
 
   it('should call sortActorItems after a short delay', () => {
@@ -23,12 +23,12 @@ describe('delayedActorSort', () => {
 
     jest.advanceTimersByTime(100);
 
-    expect(sortActorItems).toBeCalledTimes(0);
+    expect(sortActorItems).toHaveBeenCalledTimes(0);
 
     jest.advanceTimersByTime(50);
 
-    expect(sortActorItems).toBeCalledTimes(1);
-    expect(sortActorItems).toBeCalledWith(actor);
+    expect(sortActorItems).toHaveBeenCalledTimes(1);
+    expect(sortActorItems).toHaveBeenCalledWith(actor);
   });
 
   it('should call sortActorItems only once if called repeatedly with the same actor', () => {
@@ -49,12 +49,12 @@ describe('delayedActorSort', () => {
 
     jest.advanceTimersByTime(100);
 
-    expect(sortActorItems).toBeCalledTimes(0);
+    expect(sortActorItems).toHaveBeenCalledTimes(0);
 
     jest.advanceTimersByTime(100);
 
-    expect(sortActorItems).toBeCalledTimes(1);
-    expect(sortActorItems).toBeCalledWith(actor);
+    expect(sortActorItems).toHaveBeenCalledTimes(1);
+    expect(sortActorItems).toHaveBeenCalledWith(actor);
   });
 
   it('should call sortActorItems for every actor if called rapidly with different actors', () => {
@@ -77,9 +77,9 @@ describe('delayedActorSort', () => {
 
     jest.advanceTimersByTime(150);
 
-    expect(sortActorItems).toBeCalledTimes(3);
-    expect(sortActorItems).toBeCalledWith(actor1);
-    expect(sortActorItems).toBeCalledWith(actor2);
-    expect(sortActorItems).toBeCalledWith(actor3);
+    expect(sortActorItems).toHaveBeenCalledTimes(3);
+    expect(sortActorItems).toHaveBeenCalledWith(actor1);
+    expect(sortActorItems).toHaveBeenCalledWith(actor2);
+    expect(sortActorItems).toHaveBeenCalledWith(actor3);
   });
 });

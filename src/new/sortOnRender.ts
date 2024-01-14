@@ -1,9 +1,10 @@
 import collator from '../collator';
+import forEachOpenSheet from '../forEachOpenSheet';
 import module from '../module';
 import { EnableLegacySorter, registerSettingCallback } from '../settings';
 import decorators from './decorators';
 
-const sortSheet = (sheet: ActorSheet<dnd5e.documents.Actor5e>) => {
+const sortActorSheet = (sheet: ActorSheet<dnd5e.documents.Actor5e>) => {
   const sheetElem = sheet.element[0];
   const actor = sheet.actor;
   if (!sheetElem || !actor) {
@@ -53,7 +54,7 @@ Hooks.on('renderActorSheet', (sheet) => {
     // Legacy sorting - disable the new sorting
     return;
   }
-  sortSheet(sheet as ActorSheet<dnd5e.documents.Actor5e>);
+  sortActorSheet(sheet as ActorSheet<dnd5e.documents.Actor5e>);
 });
 
 const sortOpenActorSheets = () => {
@@ -61,11 +62,7 @@ const sortOpenActorSheets = () => {
     // Legacy sorting - disable the new sorting
     return;
   }
-  for (const window of Object.values((ui as unknown as { windows: Record<string, Application | undefined> }).windows)) {
-    if (window?.rendered && window instanceof ActorSheet) {
-      sortSheet(window as ActorSheet<dnd5e.documents.Actor5e>);
-    }
-  }
+  forEachOpenSheet(sortActorSheet);
 };
 
 registerSettingCallback(sortOpenActorSheets);
