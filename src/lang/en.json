@@ -5,9 +5,71 @@
         "label": "Debug Mode",
         "hint": "Leave this disabled unless specifically asked to enable it by Illandril (otherwise, it will slow things down)."
       },
+      "sort.choice": {
+        "none": "None (manual sorting)",
+        "name": "Name",
+        "quantity": "Quantity",
+        "weight": "Weight",
+        "usage": "Usage",
+        "requirements": "Requirements",
+        "school": "School",
+        "target": "Target",
+        "default": "Default"
+      },
+      "sortInventoryFallbackPrimary": {
+        "label": "Inventory Primary Sort",
+        "hint": "The default Primary Sort for the Inventory tab categories (Weapons, Equipment, Consumables, Tools, Backpacks, and Loot)"
+      },
+      "sortInventoryFallbackSecondary": {
+        "label": "Inventory Secondary Sort",
+        "hint": "The default Secondary Sort for the Inventory tab categories (Weapons, Equipment, Consumables, Tools, Backpacks, and Loot)"
+      },
+      "sortInventoryWeaponsPrimary.label": "Weapons Primary Sort",
+      "sortInventoryWeaponsSecondary.label": "Weapons Secondary Sort",
+      "sortInventoryEquipmentPrimary.label": "Equipment Primary Sort",
+      "sortInventoryEquipmentSecondary.label": "Equipment Secondary Sort",
+      "sortInventoryConsumablesPrimary.label": "Consumables Primary Sort",
+      "sortInventoryConsumablesSecondary.label": "Consumables Secondary Sort",
+      "sortInventoryToolsPrimary.label": "Tools Primary Sort",
+      "sortInventoryToolsSecondary.label": "Tools Secondary Sort",
+      "sortInventoryBackpacksPrimary.label": "Backpacks Primary Sort",
+      "sortInventoryBackpacksSecondary.label": "Backpacks Secondary Sort",
+      "sortInventoryLootPrimary.label": "Loot Primary Sort",
+      "sortInventoryLootSecondary.label": "Loot Secondary Sort",
+      
+      "sortFeaturesFallbackPrimary": {
+        "label": "Features Primary Sort",
+        "hint": "The default Primary Sort for the Features tab categories (Race, Background, Classes, and Abilities)"
+      },
+      "sortFeaturesFallbackSecondary": {
+        "label": "Features Secondary Sort",
+        "hint": "The default Secondary Sort for the Features tab categories (Race, Background, Classes, and Abilities)"
+      },
+      "sortFeaturesRacePrimary.label": "Race Primary Sort",
+      "sortFeaturesRaceSecondary.label": "Race Secondary Sort",
+      "sortFeaturesBackgroundPrimary.label": "Background Primary Sort",
+      "sortFeaturesBackgroundSecondary.label": "Background Secondary Sort",
+      "sortFeaturesClassPrimary.label": "Class Primary Sort",
+      "sortFeaturesClassSecondary.label": "Class Secondary Sort",
+      "sortFeaturesOtherPrimary.label": "Active & Passive Abilities Primary Sort",
+      "sortFeaturesOtherSecondary.label": "Active & Passive Abilities Secondary Sort",
+
+      "sortSpellsFallbackPrimary": {
+        "label": "Spellbook Primary Sort",
+        "hint": "The default Primary Sort for the Spellbook"
+      },
+      "sortSpellsFallbackSecondary": {
+        "label": "Spellbook Secondary Sort",
+        "hint": "The default Secondary Sort for the Spellbook"
+      },
+
+      "enableLegacySorter": {
+        "label": "Enable Legacy Mode",
+        "hint": "Switch to the original sorting logic, which actually changes the underlying 'sort' value for items. Enable this only if the non-Legacy mode doesn't work with your preferred Character Sheet module (and consider submitting a feature request at https://github.com/illandril/FoundryVTT-inventory-sorter/issues with a list of all modules you use). Legacy Mode only supports the settings that explicitly say they support Legacy Mode."
+      },
       "sortFeatsByRequirement": {
-        "label": "Sort Features by Requirement",
-        "hint": "Features are sorted by Requirement first, with a secondary sort on Name, so features that come from the same source (class, race, etc) are grouped together. Note: Actor sheets that you have already opened will not automatically re-sort. Refresh your browser window and re-open the Actor's sheet to re-sort after changing this setting."
+        "label": "(Legacy Mode) Sort Features by Requirement",
+        "hint": "(Legacy Mode only) Features are sorted by Requirement first, with a secondary sort on Name, so features that come from the same source (class, race, etc) are grouped together. Note: Actor sheets that you have already opened will not automatically re-sort. Refresh your browser window and re-open the Actor's sheet to re-sort after changing this setting."
       }
     }
   }

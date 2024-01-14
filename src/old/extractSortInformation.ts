@@ -1,7 +1,5 @@
-import module from '../module';
+import { LegacySortFeatsByRequirement } from '../settings';
 import sortItems, { ItemSortDetails, SortedItemDetails } from './sortItems';
-
-export const SortFeatsByRequirement = module.settings.register('sortFeatsByRequirement', Boolean, false, { hasHint: true });
 
 const getSpellSubtype = (system: dnd5e.documents.ItemSystemData.Spell) => {
   const prepMode = system.preparation?.mode;
@@ -24,7 +22,7 @@ const getFeatSortDetails = (system: dnd5e.documents.ItemSystemData.Feat) => {
     subtype = 'active';
   }
   let alternateSort: string | undefined;
-  if (SortFeatsByRequirement.get()) {
+  if (LegacySortFeatsByRequirement.get()) {
     alternateSort = system.requirements;
   }
   return { subtype, alternateSort };

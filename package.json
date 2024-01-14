@@ -32,14 +32,14 @@
   },
   "homepage": "https://github.com/illandril/FoundryVTT-inventory-sorter#readme",
   "dependencies": {
-    "@illandril/foundryvtt-utils": "^9.0.5"
+    "@illandril/foundryvtt-utils": "^9.3.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.23.0",
-    "@babel/preset-env": "^7.23.6",
-    "@babel/preset-typescript": "^7.23.2",
-    "@illandril/eslint-config-foundryvtt": "^1.8.7",
-    "@illandril/foundryvtt-types": "^6.4.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.23.3",
+    "@babel/preset-env": "^7.23.8",
+    "@babel/preset-typescript": "^7.23.3",
+    "@illandril/eslint-config-foundryvtt": "^1.8.8",
+    "@illandril/foundryvtt-types": "^6.11.3",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
@@ -50,10 +50,10 @@
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "jest-fail-on-console": "^3.1.1",
+    "jest-fail-on-console": "^3.1.2",
     "npm-run-all2": "^6.1.1",
     "rimraf": "^5.0.5",
-    "rollup": "^4.9.1",
+    "rollup": "^4.9.5",
     "rollup-plugin-copy": "^3.5.0"
   }
 }

@@ -1,3 +1,5 @@
+import collator from '../collator';
+
 export type ItemSortDetails = {
   id: string
   group: string
@@ -9,13 +11,6 @@ export type SortedItemDetails = {
   id: string
   group: string
 };
-
-const collator = new Intl.Collator(undefined, {
-  usage: 'sort',
-  sensitivity: 'base',
-  ignorePunctuation: true,
-  numeric: true,
-});
 
 const sortItems = (items: ItemSortDetails[]): SortedItemDetails[] => {
   return items

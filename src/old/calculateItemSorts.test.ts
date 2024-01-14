@@ -1,14 +1,14 @@
+import { LegacySortFeatsByRequirement } from '../settings';
 import * as spells from '../tests/data/spells';
 import { mockActor, mockItem } from '../tests/mockHelpers';
 import calculateItemSorts from './calculateItemSorts';
-import { SortFeatsByRequirement } from './extractSortInformation';
 
 beforeAll(() => {
   Hooks.callAll('init');
 });
 
 beforeEach(() => {
-  SortFeatsByRequirement.set(false);
+  LegacySortFeatsByRequirement.set(false);
 });
 
 describe('calculateItemSorts()', () => {
@@ -151,7 +151,7 @@ describe('calculateItemSorts()', () => {
   });
 
   it('sorts feats into groups correctly (SortFeatsByRequirement = false)', () => {
-    SortFeatsByRequirement.set(false);
+    LegacySortFeatsByRequirement.set(false);
     const actor = mockActor([
       mockItem({
         id: '9i6tT2SYxq5Xegzu',
@@ -234,7 +234,7 @@ describe('calculateItemSorts()', () => {
   });
 
   it('sorts feats into groups correctly (SortFeatsByRequirement = true)', () => {
-    SortFeatsByRequirement.set(true);
+    LegacySortFeatsByRequirement.set(true);
     const actor = mockActor([
       mockItem({
         id: '9i6tT2SYxq5Xegzu',
