@@ -7,13 +7,20 @@
       },
       "sort.choice": {
         "none": "None (manual sorting)",
-        "name": "Name",
-        "quantity": "Quantity",
-        "weight": "Weight",
-        "usage": "Usage",
-        "requirements": "Requirements",
-        "school": "School",
-        "target": "Target",
+        "name_asc": "Name (A-Z)",
+        "name_desc": "Name (Z-A)",
+        "quantity_asc": "Quantity (A-Z)",
+        "quantity_desc": "Quantity (Z-A)",
+        "weight_asc": "Weight (A-Z)",
+        "weight_desc": "Weight (Z-A)",
+        "usage_asc": "Usage (A-Z)",
+        "usage_desc": "Usage (Z-A)",
+        "requirements_asc": "Requirements (A-Z)",
+        "requirements_desc": "Requirements (Z-A)",
+        "school_asc": "School (A-Z)",
+        "school_desc": "School (Z-A)",
+        "target_asc": "Target (A-Z)",
+        "target_desc": "Target (Z-A)",
         "default": "Default"
       },
       "sortInventoryFallbackPrimary": {
@@ -56,20 +63,20 @@
 
       "sortSpellsFallbackPrimary": {
         "label": "Spellbook Primary Sort",
-        "hint": "The default Primary Sort for the Spellbook"
+        "hint": "The Primary Sort for the Spellbook tab"
       },
       "sortSpellsFallbackSecondary": {
         "label": "Spellbook Secondary Sort",
-        "hint": "The default Secondary Sort for the Spellbook"
+        "hint": "The Secondary Sort for the Spellbook tab"
       },
 
       "enableLegacySorter": {
-        "label": "Enable Legacy Mode",
-        "hint": "Switch to the original sorting logic, which actually changes the underlying 'sort' value for items. Enable this only if the non-Legacy mode doesn't work with your preferred Character Sheet module (and consider submitting a feature request at https://github.com/illandril/FoundryVTT-inventory-sorter/issues with a list of all modules you use). Legacy Mode only supports the settings that explicitly say they support Legacy Mode."
+        "label": "(Deprecated) Enable Legacy Mode",
+        "hint": "(Applies to all users) Switch to the original sorting logic, which actually changes the underlying 'sort' value for items. Enable this only if the non-Legacy mode doesn't work with your preferred Character Sheet module (and submit a feature request at https://github.com/illandril/FoundryVTT-inventory-sorter/issues with a list of all modules you use, because this setting will likely eventually go away). Legacy Mode only supports the settings that explicitly say they support Legacy Mode."
       },
       "sortFeatsByRequirement": {
         "label": "(Legacy Mode) Sort Features by Requirement",
-        "hint": "(Legacy Mode only) Features are sorted by Requirement first, with a secondary sort on Name, so features that come from the same source (class, race, etc) are grouped together. Note: Actor sheets that you have already opened will not automatically re-sort. Refresh your browser window and re-open the Actor's sheet to re-sort after changing this setting."
+        "hint": "(Applies to all users) (Legacy Mode only) Features are sorted by Requirement first, with a secondary sort on Name, so features that come from the same source (class, race, etc) are grouped together. Note: Actor sheets that you have already opened will not automatically re-sort. Refresh your browser window and re-open the Actor's sheet to re-sort after changing this setting."
       }
     }
   }

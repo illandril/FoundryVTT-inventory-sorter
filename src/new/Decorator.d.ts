@@ -1,2 +1,2 @@
-type Decorator = (item: dnd5e.documents.Item5e) => string | null | undefined;
+type Decorator = (item: dnd5e.documents.Item5e) => { value: string, isDesc: boolean } | null;
 export default Decorator;

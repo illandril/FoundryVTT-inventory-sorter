@@ -26,11 +26,8 @@ type NAME = typeof NAME;
 const NONE = 'none';
 type NONE = typeof NONE;
 
-type UniversalOption = NAME | NONE;
-
 const DEFAULT = 'default';
 type DEFAULT = typeof DEFAULT;
-
 
 const inventorySortOptions = ['weight', 'quantity', 'usage'] as const;
 type InventorySortOption = typeof inventorySortOptions[number];
@@ -43,28 +40,44 @@ type SpellSortOption = typeof spellSortOptions[number];
 
 type ItemSortOption = InventorySortOption | FeatureOtherSortOption | SpellSortOption;
 
-type FallbackGetter<T extends ItemSortOption> = () => T | UniversalOption;
-type SpecificGetter<T extends ItemSortOption> = () => T | UniversalOption | DEFAULT;
-type NormalizedValue<T extends ItemSortOption> = T | Exclude<UniversalOption, NONE> | null;
+type SortDirection = 'asc' | 'desc';
+type SortOption<T extends string> = `${T}_${SortDirection}`;
+type FallbackGetter<T extends ItemSortOption> = () => SortOption<T | NAME> | NONE;
+type FallbackSetter<T extends ItemSortOption> = (value: SortOption<T | NAME> | NONE) => void;
+type SpecificGetter<T extends ItemSortOption> = () => SortOption<T | NAME> | NONE | DEFAULT;
+type SpecificSetter<T extends ItemSortOption> = (value: SortOption<T | NAME> | NONE | DEFAULT) => void;
+type NormalizedValue<T extends ItemSortOption> = ({ column: T | NAME, isDesc: boolean }) | null;
 type FallbackSetting<T extends ItemSortOption> = {
   type: string
-  choices: readonly (T | UniversalOption)[]
+  choices: readonly T[]
   primary: FallbackGetter<T>
+  setPrimary: FallbackSetter<T>
   secondary: FallbackGetter<T>
+  setSecondary: FallbackSetter<T>
 };
 
-type SpecificSetting<T extends ItemSortOption> = {
+export type FallbackAsSpecificSetting<T extends ItemSortOption> = {
   primary: () => NormalizedValue<T>
+  setPrimary: FallbackSetter<T>
   secondary: () => NormalizedValue<T>
+  setSecondary: FallbackSetter<T>
+};
+
+export type SpecificSetting<T extends ItemSortOption> = {
+  primary: () => NormalizedValue<T>
+  setPrimary: SpecificSetter<T>
+  secondary: () => NormalizedValue<T>
+  setSecondary: SpecificSetter<T>
 };
 
 export type AnyItemSortOption = NormalizedValue<ItemSortOption>;
 
-const normalize = <T extends ItemSortOption>(value: T | UniversalOption): NormalizedValue<T> => {
+const normalize = <T extends ItemSortOption>(value: SortOption<T | NAME> | NONE): NormalizedValue<T> => {
   if (value === NONE) {
     return null;
   }
-  return value;
+  const [column, direction] = value.split('_') as [T | NAME, SortDirection];
+  return { column, isDesc: direction === 'desc' };
 };
 
 const getOrDefault = <T extends ItemSortOption>(get: SpecificGetter<T>, getFallback: FallbackGetter<T>): NormalizedValue<T> => {
@@ -72,24 +85,33 @@ const getOrDefault = <T extends ItemSortOption>(get: SpecificGetter<T>, getFallb
   if (value === DEFAULT) {
     value = getFallback();
   }
-  return normalize(value);
+  return normalize<T>(value);
 };
 
 const normalizeChoices = <T extends string>(choicesArray: readonly T[]) => {
   // const entries = choicesArray.map((choice) => [choice, () => module.localize(`setting.sort.choice.${choice}`)] as const);
-  const entries = choicesArray.map((choice) => [choice, `${module.id}.setting.sort.choice.${choice}`] as const);
-  return Object.fromEntries(entries) as Record<T, string>;
+  const entries = [NAME, ...choicesArray].flatMap((choice) => [
+    [`${choice}_asc`, `${module.id}.setting.sort.choice.${choice}_asc`],
+    [`${choice}_desc`, `${module.id}.setting.sort.choice.${choice}_desc`],
+  ] as const);
+  entries.push();
+
+  return Object.fromEntries([
+    [NONE, `${module.id}.setting.sort.choice.${NONE}`],
+    ...entries,
+  ]) as Record<`${T | NAME}_${'asc' | 'desc'}` | NONE, string>;
 };
 
 const getFallbackSetting = <T extends ItemSortOption>(type: string, uniqueChoices: readonly T[]): FallbackSetting<T> => {
-  const choicesArray = [NAME, ...uniqueChoices, NONE] as const;
-  const choices = normalizeChoices(choicesArray);
-  const primary = module.settings.register<T | UniversalOption>(`sort${type}FallbackPrimary`, String, NAME, {
+  const choices = normalizeChoices(uniqueChoices);
+  const primary = module.settings.register<SortOption<T | NAME> | NONE>(`sort${type}FallbackPrimary`, String, `${NAME}_asc`, {
+    scope: 'client',
     hasHint: true,
     choices,
     onChange,
   });
-  const secondary = module.settings.register<T | UniversalOption>(`sort${type}FallbackSecondary`, String, NONE, {
+  const secondary = module.settings.register<SortOption<T | NAME> | NONE>(`sort${type}FallbackSecondary`, String, NONE, {
+    scope: 'client',
     hasHint: true,
     choices,
     onChange,
@@ -97,25 +119,34 @@ const getFallbackSetting = <T extends ItemSortOption>(type: string, uniqueChoice
 
   return {
     type,
-    choices: choicesArray,
-    primary: () => primary.get(),
-    secondary: () => secondary.get(),
+    choices: uniqueChoices,
+    setPrimary: primary.set,
+    primary: primary.get,
+    setSecondary: secondary.set,
+    secondary: secondary.get,
   };
 };
 
 const getSpecificSettingPlus = <T extends ItemSortOption, E extends ItemSortOption>(category: string, fallback: FallbackSetting<T>, extra: readonly E[]): SpecificSetting<T | E> => {
-  const choices = normalizeChoices([DEFAULT, NAME, ...extra, ...fallback.choices.filter((choice) => choice !== NAME)]);
-  const primary = module.settings.register<T | E | UniversalOption | DEFAULT>(`sort${fallback.type}${category}Primary`, String, DEFAULT, {
+  const choices = {
+    [DEFAULT]: `${module.id}.setting.sort.choice.default`,
+    ...normalizeChoices([...extra, ...fallback.choices]),
+  };
+  const primary = module.settings.register<SortOption<T | E | NAME> | NONE | DEFAULT>(`sort${fallback.type}${category}Primary`, String, DEFAULT, {
+    scope: 'client',
     choices,
     onChange,
   });
-  const secondary = module.settings.register<T | E | UniversalOption | DEFAULT>(`sort${fallback.type}${category}Secondary`, String, DEFAULT, {
+  const secondary = module.settings.register<SortOption<T | E | NAME> | NONE | DEFAULT>(`sort${fallback.type}${category}Secondary`, String, DEFAULT, {
+    scope: 'client',
     choices,
     onChange,
   });
 
   return {
+    setPrimary: primary.set,
     primary: () => getOrDefault<T | E>(primary.get, fallback.primary),
+    setSecondary: secondary.set,
     secondary: () => getOrDefault<T | E>(secondary.get, fallback.secondary),
   };
 };
@@ -124,15 +155,21 @@ const getSpecificSetting = <T extends ItemSortOption>(category: string, fallback
   return getSpecificSettingPlus(category, fallback, []);
 };
 
-const asSpecificSetting = <T extends ItemSortOption>(fallback: FallbackSetting<T>): SpecificSetting<T> => {
+const asSpecificSetting = <T extends ItemSortOption>(fallback: FallbackSetting<T>): FallbackAsSpecificSetting<T> => {
   return {
-    primary: () => normalize(fallback.primary()),
-    secondary: () => normalize(fallback.secondary()),
+    setPrimary: (value) => {
+      fallback.setPrimary(value);
+    },
+    primary: () => normalize<T>(fallback.primary()),
+    setSecondary: (value) => {
+      fallback.setSecondary(value);
+    },
+    secondary: () => normalize<T>(fallback.secondary()),
   };
 };
 
 
-const InventoryFallback = getFallbackSetting('Inventory', inventorySortOptions);
+export const InventoryFallback = getFallbackSetting('Inventory', inventorySortOptions);
 const weapon = getSpecificSetting('Weapons', InventoryFallback);
 const equipment = getSpecificSetting('Equipment', InventoryFallback);
 const consumable = getSpecificSetting('Consumables', InventoryFallback);
@@ -140,7 +177,7 @@ const tool = getSpecificSetting('Tools', InventoryFallback);
 const backpack = getSpecificSetting('Backpacks', InventoryFallback);
 const loot = getSpecificSetting('Loot', InventoryFallback);
 
-const FeatureFallback = getFallbackSetting('Features', []);
+export const FeatureFallback = getFallbackSetting('Features', []);
 const race = getSpecificSetting('Race', FeatureFallback);
 const background = getSpecificSetting('Background', FeatureFallback);
 const classAndSubclass = getSpecificSetting('Class', FeatureFallback);
@@ -148,7 +185,7 @@ const feat = getSpecificSettingPlus('Other', FeatureFallback, featureOtherSortOp
 
 const spell = asSpecificSetting(getFallbackSetting('Spells', spellSortOptions));
 
-export const typeBasedSorting: Readonly<Record<dnd5e.documents.Item5e['type'], SpecificSetting<ItemSortOption> | undefined>> = {
+export const typeBasedSorting = {
   base: undefined, // Not expected to actually be used anywhere
 
   weapon,
@@ -165,10 +202,23 @@ export const typeBasedSorting: Readonly<Record<dnd5e.documents.Item5e['type'], S
   feat,
 
   spell,
-};
+} satisfies Readonly<Record<
+dnd5e.documents.Item5e['type'],
+| SpecificSetting<InventorySortOption>
+| SpecificSetting<never>
+| SpecificSetting<FeatureOtherSortOption>
+| FallbackAsSpecificSetting<SpellSortOption>
+| undefined
+>>;
 
-export const EnableLegacySorter = module.settings.register('enableLegacySorter', Boolean, false, { hasHint: true, onChange: () => {
-  onChange();
-  onChangeLegacy();
-} });
-export const LegacySortFeatsByRequirement = module.settings.register('sortFeatsByRequirement', Boolean, false, { hasHint: true, onChange: onChangeLegacy });
+export const EnableLegacySorter = module.settings.register('enableLegacySorter', Boolean, false, {
+  hasHint: true,
+  onChange: () => {
+    onChange();
+    onChangeLegacy();
+  },
+});
+export const LegacySortFeatsByRequirement = module.settings.register('sortFeatsByRequirement', Boolean, false, {
+  hasHint: true,
+  onChange: onChangeLegacy,
+});

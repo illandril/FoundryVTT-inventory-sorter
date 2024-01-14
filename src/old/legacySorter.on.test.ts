@@ -22,7 +22,7 @@ beforeAll(async () => {
     'hasActorBeenSorted',
   ).mockReturnValue(false);
 
-  forEachOpenSheet = jest.spyOn(await import('../forEachOpenSheet'), 'default').mockImplementation();
+  forEachOpenSheet = jest.spyOn(await import('../forEachOpenSheet'), 'default').mockImplementation(() => undefined);
 
   SIMULATE.mockSavedSetting('illandril-inventory-sorter', 'enableLegacySorter', true);
 

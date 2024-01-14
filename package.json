@@ -32,14 +32,14 @@
   },
   "homepage": "https://github.com/illandril/FoundryVTT-inventory-sorter#readme",
   "dependencies": {
-    "@illandril/foundryvtt-utils": "^9.3.0"
+    "@illandril/foundryvtt-utils": "^9.3.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.23.3",
     "@babel/preset-env": "^7.23.8",
     "@babel/preset-typescript": "^7.23.3",
     "@illandril/eslint-config-foundryvtt": "^1.8.8",
-    "@illandril/foundryvtt-types": "^6.11.3",
+    "@illandril/foundryvtt-types": "^6.12.1",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",

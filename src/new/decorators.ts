@@ -8,25 +8,38 @@ const get = (item: dnd5e.documents.Item5e, setting: AnyItemSortOption | null): R
   if (setting === null) {
     return null;
   }
-  switch (setting) {
+  let sortValue: string;
+  switch (setting.column) {
     case 'name':
-      return item.name;
+      sortValue = item.name;
+      break;
     case 'quantity':
-      return `${(item.system as dnd5e.documents.ItemSystemData.PhysicalItem).quantity ?? 0}`;
+      sortValue = `${(item.system as dnd5e.documents.ItemSystemData.PhysicalItem).quantity ?? 0}`;
+      break;
     case 'usage':
-      return getUsage(item);
+      sortValue = getUsage(item);
+      break;
     case 'weight':
-      return `${(item.system as dnd5e.documents.ItemSystemData.PhysicalItem).weight ?? 0}`;
+      sortValue = `${(item.system as dnd5e.documents.ItemSystemData.PhysicalItem).weight ?? 0}`;
+      break;
     case 'school':
-      return (item.system as dnd5e.documents.ItemSystemData.Spell).school ?? '';
+      sortValue = (item.system as dnd5e.documents.ItemSystemData.Spell).school ?? '';
+      break;
     case 'target':
-      return getTarget(item);
+      sortValue = getTarget(item);
+      break;
     case 'requirements':
-      return (item.system as dnd5e.documents.ItemSystemData.Feat).requirements ?? '';
+      sortValue = (item.system as dnd5e.documents.ItemSystemData.Feat).requirements ?? '';
+      break;
+    /* istanbul ignore next - this is never expected to happen */
     default:
       module.logger.error('Unexpected sort setting', setting);
       return null;
   }
+  return {
+    value: sortValue,
+    isDesc: setting.isDesc,
+  };
 };
 
 const getForType = (item: dnd5e.documents.Item5e) => {
