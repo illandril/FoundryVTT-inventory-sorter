@@ -44,7 +44,7 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@types/chance": "^1.1.6",
-    "@types/jest": "^29.5.11",
+    "@types/jest": "^29.5.12",
     "babel-jest": "^29.7.0",
     "chance": "^1.1.11",
     "cross-env": "^7.0.3",
