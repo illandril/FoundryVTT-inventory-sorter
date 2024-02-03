@@ -6,6 +6,9 @@
   "esmodules": [
     "module.js"
   ],
+  "styles": [
+    "styles.css"
+  ],
   "languages": [
     {
       "lang": "en",

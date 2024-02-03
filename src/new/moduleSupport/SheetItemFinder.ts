@@ -11,7 +11,7 @@ export type ItemSection = {
 
 type SheetItemFinder = {
   key: string
-  (sheet: ActorSheet<dnd5e.documents.Actor5e>, sheetElem: Element): ItemSection[] | null
+  (sheetElem: Element): ItemSection[] | null
 };
 
 export default SheetItemFinder;

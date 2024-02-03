@@ -41,6 +41,10 @@ export default {
   // A set of global variables that need to be available in all test environments
   globals,
 
+  moduleNameMapper: {
+    '\\.scss$': '<rootDir>/src/tests/style.js',
+  },
+
   // The paths to modules that run some code to configure or set up the testing environment before each test
   setupFiles: [
     '@illandril/foundryvtt-utils/dist/tests/setup',

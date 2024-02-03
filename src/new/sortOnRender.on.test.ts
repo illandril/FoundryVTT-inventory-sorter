@@ -73,6 +73,145 @@ it('attempts to sort when settings are changed (sheet without item-lists)', () =
   expect(element.querySelectorAll).toHaveBeenLastCalledWith('.item-list');
 });
 
+describe('sheetPrefs update', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('attempts to sort when sheetPrefs for active user are changed (sheet without item-lists)', async () => {
+    const element = document.createElement('div');
+    jest.spyOn(element, 'querySelectorAll');
+
+    const sheet = {
+      actor: {},
+      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    } as ActorSheet<dnd5e.documents.Actor5e>;
+    jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
+      callback(sheet);
+    });
+
+    Hooks.callAll('updateUser', { id: 'mock-user-id' } as User, {
+      flags: {
+        dnd5e: {
+          sheetPrefs: {
+            character: {
+              tabs: {
+                inventory: {
+                  group: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    } as object, {}, 'mock-user-id');
+    await jest.runAllTimersAsync();
+
+    expect(element.querySelectorAll).toHaveBeenCalledTimes(1);
+    expect(element.querySelectorAll).toHaveBeenCalledWith('.item-list');
+
+    Hooks.callAll('updateUser', { id: 'mock-user-id' } as User, {
+      flags: {
+        dnd5e: {
+          sheetPrefs: {
+            character: {
+              tabs: {
+                inventory: {
+                  group: false,
+                },
+              },
+            },
+          },
+        },
+      },
+    } as object, {}, 'mock-user-id');
+    await jest.runAllTimersAsync();
+
+    expect(element.querySelectorAll).toHaveBeenCalledTimes(2);
+    expect(element.querySelectorAll).toHaveBeenCalledWith('.item-list');
+
+    Hooks.callAll('updateUser', { id: 'mock-user-id' } as User, {
+      flags: {
+        dnd5e: {
+          sheetPrefs: {
+            character: {
+              tabs: {
+                features: {
+                  group: false,
+                },
+              },
+            },
+          },
+        },
+      },
+    } as object, {}, 'mock-user-id');
+    await jest.runAllTimersAsync();
+
+    expect(element.querySelectorAll).toHaveBeenCalledTimes(3);
+    expect(element.querySelectorAll).toHaveBeenCalledWith('.item-list');
+  });
+
+  it('does not attempt to sort when to sort when non-sheetPrefs for current user are changed for current  (sheet without item-lists)', async () => {
+    const element = document.createElement('div');
+    jest.spyOn(element, 'querySelectorAll');
+
+    const sheet = {
+      actor: {},
+      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    } as ActorSheet<dnd5e.documents.Actor5e>;
+    jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
+      callback(sheet);
+    });
+
+    Hooks.callAll('updateUser', { id: 'mock-user-id' } as User, {
+      flags: {
+        dnd5e: {
+          whatever: true,
+        },
+      },
+    } as object, {}, 'mock-user-id');
+    await jest.runAllTimersAsync();
+
+    expect(element.querySelectorAll).toHaveBeenCalledTimes(0);
+  });
+
+  it('does not attempt to sort when to sort when sheetPrefs for another user are changed (sheet without item-lists)', async () => {
+    const element = document.createElement('div');
+    jest.spyOn(element, 'querySelectorAll');
+
+    const sheet = {
+      actor: {},
+      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    } as ActorSheet<dnd5e.documents.Actor5e>;
+    jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
+      callback(sheet);
+    });
+
+    Hooks.callAll('updateUser', { id: 'mock-other-id' } as User, {
+      flags: {
+        dnd5e: {
+          sheetPrefs: {
+            character: {
+              tabs: {
+                inventory: {
+                  group: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    } as object, {}, 'mock-id');
+    await jest.runAllTimersAsync();
+
+    expect(element.querySelectorAll).toHaveBeenCalledTimes(0);
+  });
+});
+
+
 it('does not attempt to sort when sheet has no actor', () => {
   const element = document.createElement('div');
   jest.spyOn(element, 'querySelectorAll');
@@ -162,7 +301,6 @@ it('gracefully handles items w/o id', () => {
   expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-b');
   expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-d');
 });
-
 
 it('gracefully handles items w/o associated data', () => {
   const actor = mockActor([
@@ -1962,6 +2100,142 @@ describe.each([
     expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-a');
     expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-b');
     expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-d');
+    expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-c');
+  });
+});
+
+describe('container sheets', () => {
+  const type = 'loot';
+
+  it('supports name_asc sort', () => {
+    typeBasedSorting[type].setPrimary('name_asc');
+    const actor = mockActor([
+      mockItem({
+        id: 'mock-item-a',
+        name: 'bravo',
+        type,
+        sort: 1000,
+        system: {},
+      }),
+      mockItem({
+        id: 'mock-item-b',
+        name: 'Charlie',
+        type,
+        sort: 2000,
+        system: {},
+      }),
+      mockItem({
+        id: 'mock-item-c',
+        name: 'Alfa',
+        type,
+        sort: 3000,
+        system: {},
+      }),
+      mockItem({
+        id: 'mock-item-d',
+        name: 'Delta',
+        type,
+        sort: 4000,
+        system: {},
+      }),
+    ]);
+
+    const element = document.createElement('div');
+    element.innerHTML = `<div class="item-list">
+      <div class="item" data-item-id="mock-item-a"></div>
+      <div class="item" data-item-id="mock-item-b"></div>
+      <div class="item" data-item-id="mock-item-c"></div>
+      <div class="item" data-item-id="mock-item-d"></div>
+    </div>`;
+
+    // Sanity check test data setup
+    expect(element.children).toHaveLength(1);
+    expect(element.firstElementChild?.children).toHaveLength(4);
+    expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-a');
+    expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-b');
+    expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-c');
+    expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-d');
+
+    const sheet = {
+      actor,
+      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    } as Application & {
+      actor: dnd5e.documents.Actor5e
+    };
+
+    Hooks.callAll('renderContainerSheet', sheet, {} as JQuery<HTMLElement>);
+
+    expect(element.children).toHaveLength(1);
+    expect(element.firstElementChild?.children).toHaveLength(4);
+    expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-c');
+    expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-a');
+    expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-b');
+    expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-d');
+  });
+
+  it('supports name_desc sort', () => {
+    typeBasedSorting[type].setPrimary('name_desc');
+    const actor = mockActor([
+      mockItem({
+        id: 'mock-item-a',
+        name: 'bravo',
+        type,
+        sort: 1000,
+        system: {},
+      }),
+      mockItem({
+        id: 'mock-item-b',
+        name: 'Charlie',
+        type,
+        sort: 2000,
+        system: {},
+      }),
+      mockItem({
+        id: 'mock-item-c',
+        name: 'Alfa',
+        type,
+        sort: 3000,
+        system: {},
+      }),
+      mockItem({
+        id: 'mock-item-d',
+        name: 'Delta',
+        type,
+        sort: 4000,
+        system: {},
+      }),
+    ]);
+
+    const element = document.createElement('div');
+    element.innerHTML = `<div class="item-list">
+      <div class="item" data-item-id="mock-item-a"></div>
+      <div class="item" data-item-id="mock-item-b"></div>
+      <div class="item" data-item-id="mock-item-c"></div>
+      <div class="item" data-item-id="mock-item-d"></div>
+    </div>`;
+
+    // Sanity check test data setup
+    expect(element.children).toHaveLength(1);
+    expect(element.firstElementChild?.children).toHaveLength(4);
+    expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-a');
+    expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-b');
+    expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-c');
+    expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-d');
+
+    const sheet = {
+      actor,
+      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    } as Application & {
+      actor: dnd5e.documents.Actor5e
+    };
+
+    Hooks.callAll('renderContainerSheet', sheet, {} as JQuery<HTMLElement>);
+
+    expect(element.children).toHaveLength(1);
+    expect(element.firstElementChild?.children).toHaveLength(4);
+    expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-d');
+    expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-b');
+    expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-a');
     expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-c');
   });
 });

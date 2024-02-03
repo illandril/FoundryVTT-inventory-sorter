@@ -1,3 +1,4 @@
+import './dnd5e.scss';
 import GenericSheetHelper from './generic';
 import SheetItemFinder from './SheetItemFinder';
 import Tidy5eSheetKgarHelper from './tidy5e-sheet-kgar';

@@ -1,6 +1,6 @@
 import SheetItemFinder, { ItemNode, ItemSection } from './SheetItemFinder';
 
-const Tidy5eSheetKgarHelper: SheetItemFinder = (sheet, sheetElem) => {
+const Tidy5eSheetKgarHelper: SheetItemFinder = (sheetElem) => {
   if (!sheetElem?.classList.contains('tidy5e-kgar')) {
     return null;
   }

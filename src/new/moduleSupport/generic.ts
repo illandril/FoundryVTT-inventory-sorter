@@ -1,6 +1,6 @@
 import SheetItemFinder, { ItemNode, ItemSection } from './SheetItemFinder';
 
-const GenericSheetHelper: SheetItemFinder = (sheet, sheetElem) => {
+const GenericSheetHelper: SheetItemFinder = (sheetElem) => {
   const sections: ItemSection[] = [];
   for (const sectionElement of sheetElem.querySelectorAll('.item-list')) {
     const items: ItemNode[] = [];

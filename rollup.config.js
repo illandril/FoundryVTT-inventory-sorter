@@ -5,6 +5,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import fs from 'fs-extra';
 import copy from 'rollup-plugin-copy';
+import scss from 'rollup-plugin-scss';
 import globals, { description, repositoryURL } from './globals.js';
 
 const target = 'dist';
@@ -25,6 +26,7 @@ export default {
       babelHelpers: 'bundled',
       extensions: ['.js', '.ts'],
     }),
+    scss({ fileName: 'styles.css' }),
     terser(),
     copy({
       targets: [

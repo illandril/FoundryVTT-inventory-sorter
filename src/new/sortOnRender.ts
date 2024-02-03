@@ -37,21 +37,24 @@ const compareSorts = (a: { sorts: ReturnType<Decorator>[] }, b: { sorts: ReturnT
   return 0;
 };
 
-const sortActorSheet = (sheet: ActorSheet<dnd5e.documents.Actor5e>) => {
+const sortSheet = (sheet: Application) => {
   if (EnableLegacySorter.get()) {
     // Legacy sorting - disable the new sorting
     return;
   }
   const sheetElem = sheet.element.get(0);
-  const actor = sheet.actor;
+  const actor = foundry.utils.getProperty(sheet, 'actor');
   if (!sheetElem || !actor) {
-    module.logger.debug('Not sorting sheet - no sheet element or no actor', sheet);
+    module.logger.debug('Not sorting sheet - no sheet element or no actor', sheet, sheetElem, actor);
     return;
   }
+  sort(sheetElem, actor as dnd5e.documents.Actor5e);
+};
 
+const sort = (sheetElem: Element, actor: dnd5e.documents.Actor5e) => {
   for (const itemFinder of itemFinders) {
     module.logger.debug('Checking itemFinder', itemFinder.key);
-    const sections = itemFinder(sheet, sheetElem);
+    const sections = itemFinder(sheetElem);
     if (sections?.length) {
       module.logger.debug('Found sections', itemFinder.key, sections.length);
       for (const section of sections) {
@@ -63,15 +66,19 @@ const sortActorSheet = (sheet: ActorSheet<dnd5e.documents.Actor5e>) => {
           section.element.insertBefore(item.element, section.referenceNode);
         }
       }
-      module.logger.debug('Done sorting sheet', sheet);
+      module.logger.debug('Done sorting sheet', sheetElem, actor);
       return;
     }
   }
-  module.logger.debug('Could not sort sheet - no sections found', sheet);
+  module.logger.debug('Could not sort sheet - no sections found', sheetElem, actor);
 };
 
 Hooks.on('renderActorSheet', (sheet) => {
-  sortActorSheet(sheet as ActorSheet<dnd5e.documents.Actor5e>);
+  sortSheet(sheet);
+});
+
+Hooks.on('renderContainerSheet', (containerSheet) => {
+  sortSheet(containerSheet);
 });
 
 declare global {
@@ -81,7 +88,17 @@ declare global {
 }
 
 Hooks.on('tidy5e-sheet.renderActorSheet', (sheet) => {
-  sortActorSheet(sheet);
+  sortSheet(sheet);
+});
+
+Hooks.on('updateUser', (user, changes) => {
+  if (user.id === game.user?.id && foundry.utils.getProperty(changes, 'flags.dnd5e.sheetPrefs')) {
+    // We need to wait briefly so the dnd5e 3.x character sheet's grouping
+    // logic doesn't overwrite our sorting logic
+    setTimeout(() => {
+      sortOpenActorSheets();
+    }, 1);
+  }
 });
 
 const sortOpenActorSheets = () => {
@@ -89,7 +106,7 @@ const sortOpenActorSheets = () => {
     // Legacy sorting - disable the new sorting
     return;
   }
-  forEachOpenSheet(sortActorSheet);
+  forEachOpenSheet(sortSheet);
 };
 
 registerSettingCallback(sortOpenActorSheets);
