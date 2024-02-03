@@ -13,6 +13,8 @@
         "quantity_desc": "Quantity (Z-A)",
         "weight_asc": "Weight (A-Z)",
         "weight_desc": "Weight (Z-A)",
+        "totalWeight_asc": "Total Weight (A-Z)",
+        "totalWeight_desc": "Total Weight (Z-A)",
         "usage_asc": "Usage (A-Z)",
         "usage_desc": "Usage (Z-A)",
         "requirements_asc": "Requirements (A-Z)",

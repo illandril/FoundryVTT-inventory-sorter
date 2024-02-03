@@ -4,12 +4,13 @@ import module from '../module';
 import { EnableLegacySorter, registerSettingCallback } from '../settings';
 import Decorator from './Decorator';
 import decorators from './decorators';
+import { itemFinders } from './moduleSupport';
+import { ItemNode } from './moduleSupport/SheetItemFinder';
 
-const mapItemNode = (actor: dnd5e.documents.Actor5e, element: Element, index: number) => {
-  const id = element.getAttribute('data-item-id') || '';
-  const item = actor.items.get(id);
+const mapItemNode = (actor: dnd5e.documents.Actor5e, itemNode: ItemNode, index: number) => {
+  const item = actor.items.get(itemNode.id);
   return {
-    element,
+    ...itemNode,
     sorts: [
       ...decorators.map((decorator) => item ? decorator(item) : null),
 
@@ -37,33 +38,50 @@ const compareSorts = (a: { sorts: ReturnType<Decorator>[] }, b: { sorts: ReturnT
 };
 
 const sortActorSheet = (sheet: ActorSheet<dnd5e.documents.Actor5e>) => {
+  if (EnableLegacySorter.get()) {
+    // Legacy sorting - disable the new sorting
+    return;
+  }
   const sheetElem = sheet.element.get(0);
   const actor = sheet.actor;
   if (!sheetElem || !actor) {
     module.logger.debug('Not sorting sheet - no sheet element or no actor', sheet);
     return;
   }
-  module.logger.debug('Sorting sheet', sheet);
-  const itemLists = sheetElem.querySelectorAll('.item-list');
-  for (const itemList of itemLists) {
-    const itemNodes = itemList.querySelectorAll('.item');
-    const sortedItems = [...itemNodes].map((element, index) => mapItemNode(actor, element, index));
-    sortedItems.sort(compareSorts);
-    module.logger.debug('Sorted list', sortedItems);
 
-    for (const item of sortedItems) {
-      itemList.appendChild(item.element);
+  for (const itemFinder of itemFinders) {
+    module.logger.debug('Checking itemFinder', itemFinder.key);
+    const sections = itemFinder(sheet, sheetElem);
+    if (sections?.length) {
+      module.logger.debug('Found sections', itemFinder.key, sections.length);
+      for (const section of sections) {
+        const sortedItems = section.items.map((element, index) => mapItemNode(actor, element, index));
+        sortedItems.sort(compareSorts);
+        module.logger.debug('Sorted list', sortedItems);
+
+        for (const item of sortedItems) {
+          section.element.insertBefore(item.element, section.referenceNode);
+        }
+      }
+      module.logger.debug('Done sorting sheet', sheet);
+      return;
     }
   }
-  module.logger.debug('Done sorting sheet', sheet);
+  module.logger.debug('Could not sort sheet - no sections found', sheet);
 };
 
 Hooks.on('renderActorSheet', (sheet) => {
-  if (EnableLegacySorter.get()) {
-    // Legacy sorting - disable the new sorting
-    return;
-  }
   sortActorSheet(sheet as ActorSheet<dnd5e.documents.Actor5e>);
+});
+
+declare global {
+  interface HookCallbacks {
+    'tidy5e-sheet.renderActorSheet': (sheet: ActorSheet<dnd5e.documents.Actor5e>) => void
+  }
+}
+
+Hooks.on('tidy5e-sheet.renderActorSheet', (sheet) => {
+  sortActorSheet(sheet);
 });
 
 const sortOpenActorSheets = () => {

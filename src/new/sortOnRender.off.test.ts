@@ -18,7 +18,7 @@ it('does not attempt to sort when sheet is rendered', () => {
     element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
 
-  Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+  Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
   expect(element.querySelectorAll).not.toHaveBeenCalled();
 });

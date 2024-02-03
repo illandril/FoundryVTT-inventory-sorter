@@ -44,7 +44,7 @@ it('attempts to sort when sheet is rendered (sheet without item-lists)', () => {
     element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
 
-  Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+  Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
   expect(element.querySelectorAll).toHaveBeenCalledTimes(1);
   expect(element.querySelectorAll).toHaveBeenCalledWith('.item-list');
@@ -84,7 +84,7 @@ it('does not attempt to sort when sheet has no actor', () => {
     callback(sheet);
   });
 
-  Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+  Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
   expect(element.querySelectorAll).not.toHaveBeenCalled();
 });
@@ -102,7 +102,7 @@ it('does not attempt to sort when sheet has no element', () => {
     callback(sheet);
   });
 
-  Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+  Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
   expect(element.querySelectorAll).not.toHaveBeenCalled();
 });
@@ -153,7 +153,7 @@ it('gracefully handles items w/o id', () => {
     element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
 
-  Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+  Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
   expect(element.children).toHaveLength(1);
   expect(element.firstElementChild?.children).toHaveLength(4);
@@ -210,7 +210,7 @@ it('gracefully handles items w/o associated data', () => {
     element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
 
-  Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+  Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
   expect(element.children).toHaveLength(1);
   expect(element.firstElementChild?.children).toHaveLength(4);
@@ -289,7 +289,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -353,7 +353,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -417,7 +417,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -481,7 +481,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -544,7 +544,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -573,6 +573,7 @@ describe.each([
         sort: 1000,
         system: {
           weight: 10,
+          quantity: 1,
         },
       }),
       mockItem({
@@ -582,6 +583,7 @@ describe.each([
         sort: 2000,
         system: {
           weight: 5,
+          quantity: 3,
         },
       }),
       mockItem({
@@ -591,6 +593,7 @@ describe.each([
         sort: 3000,
         system: {
           // Intentionally omitted
+          quantity: 100,
         },
       }),
       mockItem({
@@ -600,6 +603,7 @@ describe.each([
         sort: 4000,
         system: {
           weight: 2,
+          quantity: 10,
         },
       }),
     ]);
@@ -625,7 +629,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -645,6 +649,7 @@ describe.each([
         sort: 1000,
         system: {
           weight: 10,
+          quantity: 1,
         },
       }),
       mockItem({
@@ -654,6 +659,7 @@ describe.each([
         sort: 2000,
         system: {
           weight: 5,
+          quantity: 3,
         },
       }),
       mockItem({
@@ -663,6 +669,7 @@ describe.each([
         sort: 3000,
         system: {
           // Intentionally omitted
+          quantity: 100,
         },
       }),
       mockItem({
@@ -672,6 +679,7 @@ describe.each([
         sort: 4000,
         system: {
           weight: 2,
+          quantity: 10,
         },
       }),
     ]);
@@ -697,13 +705,165 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
     expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-a');
     expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-b');
     expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-d');
+    expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-c');
+  });
+
+  it('supports totalWeight_asc sorting', () => {
+    typeBasedSorting[type].setPrimary('totalWeight_asc');
+    const actor = mockActor([
+      mockItem({
+        id: 'mock-item-a',
+        name: 'bravo',
+        type,
+        sort: 1000,
+        system: {
+          weight: 10,
+          quantity: 1,
+        },
+      }),
+      mockItem({
+        id: 'mock-item-b',
+        name: 'Charlie',
+        type,
+        sort: 2000,
+        system: {
+          weight: 5,
+          quantity: 3,
+        },
+      }),
+      mockItem({
+        id: 'mock-item-c',
+        name: 'Alfa',
+        type,
+        sort: 3000,
+        system: {
+          // Intentionally omitted
+          quantity: 100,
+        },
+      }),
+      mockItem({
+        id: 'mock-item-d',
+        name: 'Delta',
+        type,
+        sort: 4000,
+        system: {
+          weight: 2,
+          quantity: 10,
+        },
+      }),
+    ]);
+
+    const element = document.createElement('div');
+    element.innerHTML = `<div class="item-list">
+      <div class="item" data-item-id="mock-item-a"></div>
+      <div class="item" data-item-id="mock-item-b"></div>
+      <div class="item" data-item-id="mock-item-c"></div>
+      <div class="item" data-item-id="mock-item-d"></div>
+    </div>`;
+
+    // Sanity check test data setup
+    expect(element.children).toHaveLength(1);
+    expect(element.firstElementChild?.children).toHaveLength(4);
+    expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-a');
+    expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-b');
+    expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-c');
+    expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-d');
+
+    const sheet = {
+      actor,
+      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    } as ActorSheet<dnd5e.documents.Actor5e>;
+
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+
+    expect(element.children).toHaveLength(1);
+    expect(element.firstElementChild?.children).toHaveLength(4);
+    expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-c');
+    expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-a');
+    expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-b');
+    expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-d');
+  });
+
+  it('supports totalWeight_desc sorting', () => {
+    typeBasedSorting[type].setPrimary('totalWeight_desc');
+    const actor = mockActor([
+      mockItem({
+        id: 'mock-item-a',
+        name: 'bravo',
+        type,
+        sort: 1000,
+        system: {
+          weight: 10,
+          quantity: 1,
+        },
+      }),
+      mockItem({
+        id: 'mock-item-b',
+        name: 'Charlie',
+        type,
+        sort: 2000,
+        system: {
+          weight: 5,
+          quantity: 3,
+        },
+      }),
+      mockItem({
+        id: 'mock-item-c',
+        name: 'Alfa',
+        type,
+        sort: 3000,
+        system: {
+          // Intentionally omitted
+          quantity: 100,
+        },
+      }),
+      mockItem({
+        id: 'mock-item-d',
+        name: 'Delta',
+        type,
+        sort: 4000,
+        system: {
+          weight: 2,
+          quantity: 10,
+        },
+      }),
+    ]);
+
+    const element = document.createElement('div');
+    element.innerHTML = `<div class="item-list">
+      <div class="item" data-item-id="mock-item-a"></div>
+      <div class="item" data-item-id="mock-item-b"></div>
+      <div class="item" data-item-id="mock-item-c"></div>
+      <div class="item" data-item-id="mock-item-d"></div>
+    </div>`;
+
+    // Sanity check test data setup
+    expect(element.children).toHaveLength(1);
+    expect(element.firstElementChild?.children).toHaveLength(4);
+    expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-a');
+    expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-b');
+    expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-c');
+    expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-d');
+
+    const sheet = {
+      actor,
+      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    } as ActorSheet<dnd5e.documents.Actor5e>;
+
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+
+    expect(element.children).toHaveLength(1);
+    expect(element.firstElementChild?.children).toHaveLength(4);
+    expect(element.firstElementChild?.children[0].getAttribute('data-item-id')).toBe('mock-item-d');
+    expect(element.firstElementChild?.children[1].getAttribute('data-item-id')).toBe('mock-item-b');
+    expect(element.firstElementChild?.children[2].getAttribute('data-item-id')).toBe('mock-item-a');
     expect(element.firstElementChild?.children[3].getAttribute('data-item-id')).toBe('mock-item-c');
   });
 
@@ -769,7 +929,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -841,7 +1001,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -922,7 +1082,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1003,7 +1163,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1079,7 +1239,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1151,7 +1311,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1235,7 +1395,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1319,7 +1479,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1395,7 +1555,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1467,7 +1627,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1547,7 +1707,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1627,7 +1787,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1711,7 +1871,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);
@@ -1795,7 +1955,7 @@ describe.each([
       element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
-    Hooks.call('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
+    Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
 
     expect(element.children).toHaveLength(1);
     expect(element.firstElementChild?.children).toHaveLength(4);

@@ -29,7 +29,7 @@ type NONE = typeof NONE;
 const DEFAULT = 'default';
 type DEFAULT = typeof DEFAULT;
 
-const inventorySortOptions = ['weight', 'quantity', 'usage'] as const;
+const inventorySortOptions = ['weight', 'totalWeight', 'quantity', 'usage'] as const;
 type InventorySortOption = typeof inventorySortOptions[number];
 
 const featureOtherSortOptions = ['requirements', 'usage'] as const;

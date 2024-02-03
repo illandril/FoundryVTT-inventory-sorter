@@ -9,18 +9,23 @@ const get = (item: dnd5e.documents.Item5e, setting: AnyItemSortOption | null): R
     return null;
   }
   let sortValue: string;
+  const quantity = (item.system as dnd5e.documents.ItemSystemData.PhysicalItem).quantity ?? 0;
+  const weight = (item.system as dnd5e.documents.ItemSystemData.PhysicalItem).weight ?? 0;
   switch (setting.column) {
     case 'name':
       sortValue = item.name;
       break;
     case 'quantity':
-      sortValue = `${(item.system as dnd5e.documents.ItemSystemData.PhysicalItem).quantity ?? 0}`;
+      sortValue = `${quantity}`;
       break;
     case 'usage':
       sortValue = getUsage(item);
       break;
     case 'weight':
-      sortValue = `${(item.system as dnd5e.documents.ItemSystemData.PhysicalItem).weight ?? 0}`;
+      sortValue = `${weight}`;
+      break;
+    case 'totalWeight':
+      sortValue = `${weight * quantity}`;
       break;
     case 'school':
       sortValue = (item.system as dnd5e.documents.ItemSystemData.Spell).school ?? '';
