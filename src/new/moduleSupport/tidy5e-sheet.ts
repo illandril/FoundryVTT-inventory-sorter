@@ -11,7 +11,10 @@ const Tidy5eSheetHelper: SheetItemFinder = (sheetElem) => {
   const sections: ItemSection[] = [];
   for (const itemTable of sheetElem.querySelectorAll('[data-tidy-sheet-part="item-table"]')) {
     const items: ItemNode[] = [];
-    const sectionElement = itemTable.querySelector('.items') ?? itemTable;
+    const sectionElement = itemTable.querySelector('[data-item-id]')?.parentElement;
+    if (!sectionElement) {
+      continue;
+    }
     const referenceNode = sectionElement.querySelector('[data-item-id] + :not([data-item-id])');
     for (const itemElement of sectionElement.querySelectorAll('[data-item-id]')) {
       const id = itemElement.getAttribute('data-item-id')!;
@@ -29,6 +32,6 @@ const Tidy5eSheetHelper: SheetItemFinder = (sheetElem) => {
   }
   return sections;
 };
-Tidy5eSheetHelper.key = 'tidy5e-sheet-kgar';
+Tidy5eSheetHelper.key = 'tidy5e-sheet';
 
 export default Tidy5eSheetHelper;
