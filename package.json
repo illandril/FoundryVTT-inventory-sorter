@@ -1,6 +1,6 @@
 {
   "name": "@illandril/foundryvtt-inventory-sorter",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Illandril's Inventory Sorter (5e): Automatically sorts actors' inventories alphabetically (currently only compatible with the DnD5e system).",
   "type": "module",
   "scripts": {
