@@ -1,7 +1,10 @@
 import SheetItemFinder, { ItemNode, ItemSection } from './SheetItemFinder';
 
-const Tidy5eSheetKgarHelper: SheetItemFinder = (sheetElem) => {
-  if (!sheetElem?.classList.contains('tidy5e-kgar')) {
+const Tidy5eSheetHelper: SheetItemFinder = (sheetElem) => {
+  // https://github.com/kgar/foundry-vtt-tidy-5e-sheets
+  // .tidy5e-kgar is the class used for the Alpha version of kgar's rewrite
+  // .tidy5e-sheet is what was used when the rewrite officially took over the old module
+  if (!sheetElem?.classList.contains('tidy5e-kgar') && !sheetElem?.classList.contains('tidy5e-sheet')) {
     return null;
   }
 
@@ -26,6 +29,6 @@ const Tidy5eSheetKgarHelper: SheetItemFinder = (sheetElem) => {
   }
   return sections;
 };
-Tidy5eSheetKgarHelper.key = 'tidy5e-sheet-kgar';
+Tidy5eSheetHelper.key = 'tidy5e-sheet-kgar';
 
-export default Tidy5eSheetKgarHelper;
+export default Tidy5eSheetHelper;
