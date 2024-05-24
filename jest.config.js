@@ -3,7 +3,7 @@
  * https://jestjs.io/docs/configuration
  */
 
-import utilGlobals from '@illandril/foundryvtt-utils/dist/tests/globals.js';
+import utilGlobals from '@illandril/foundryvtt-utils/tests/globals';
 import deepmerge from 'deepmerge';
 import localGlobals from './globals.js';
 
@@ -20,10 +20,7 @@ export default {
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: [
-    'src/tests/',
-    '\\.d\\.ts$',
-  ],
+  coveragePathIgnorePatterns: ['src/tests/', '\\.d\\.ts$'],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'babel',
@@ -46,22 +43,14 @@ export default {
   },
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFiles: [
-    '@illandril/foundryvtt-utils/dist/tests/setup',
-    './src/tests/setup.ts',
-  ],
+  setupFiles: ['@illandril/foundryvtt-utils/tests/setup', './src/tests/setup.ts'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: [
-    '@illandril/foundryvtt-utils/dist/tests/setupAfterEnv',
-    './src/tests/setupAfterEnv.ts',
-  ],
+  setupFilesAfterEnv: ['@illandril/foundryvtt-utils/tests/setupAfterEnv', './src/tests/setupAfterEnv.ts'],
 
   // The test environment that will be used for testing
   testEnvironment: 'jsdom',
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: [
-    '/node_modules/(?!@illandril).+\\.js$',
-  ],
+  transformIgnorePatterns: ['/node_modules/(?!@illandril).+\\.js$'],
 };

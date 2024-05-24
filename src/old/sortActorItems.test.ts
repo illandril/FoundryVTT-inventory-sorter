@@ -1,5 +1,5 @@
 import { mockActor, mockItem } from '../tests/mockHelpers';
-import { ItemSort } from './calculateItemSorts';
+import type { ItemSort } from './calculateItemSorts';
 
 let sortActorItems: typeof import('./sortActorItems').default;
 let hasActorBeenSorted: typeof import('./sortActorItems').hasActorBeenSorted;
@@ -37,14 +37,17 @@ describe('sortActorItems()', () => {
     calculateItemSorts.mockReturnValue(mockCalculatedItemSorts);
 
     const updateEmbeddedDocuments = jest.fn<Promise<unknown>, unknown[]>().mockResolvedValue(undefined);
-    const actor = mockActor([
-      mockItem({ id: '9i6tT2SYxq5Xegzu', sort: 10000, name: 'A', type: 'feat', system: {} }),
-      mockItem({ id: 'WynbxDC89Wp0PODY', sort: 20000, name: 'C', type: 'feat', system: {} }),
-      mockItem({ id: 'L1PmYKzM0AkYtFKB', sort: 30000, name: 'B', type: 'feat', system: {} }),
-    ], {
-      id: 'Y2QQKpkeZCHalka0',
-      updateEmbeddedDocuments,
-    });
+    const actor = mockActor(
+      [
+        mockItem({ id: '9i6tT2SYxq5Xegzu', sort: 10000, name: 'A', type: 'feat', system: {} }),
+        mockItem({ id: 'WynbxDC89Wp0PODY', sort: 20000, name: 'C', type: 'feat', system: {} }),
+        mockItem({ id: 'L1PmYKzM0AkYtFKB', sort: 30000, name: 'B', type: 'feat', system: {} }),
+      ],
+      {
+        id: 'Y2QQKpkeZCHalka0',
+        updateEmbeddedDocuments,
+      },
+    );
 
     await sortActorItems(actor);
 
@@ -53,10 +56,12 @@ describe('sortActorItems()', () => {
       illandrilInventorySorterUpdate: true,
     });
     expect(updateEmbeddedDocuments.mock.calls[0][1]).toHaveLength(2);
-    expect(updateEmbeddedDocuments.mock.calls[0][1]).toEqual(expect.arrayContaining([
-      { _id: 'L1PmYKzM0AkYtFKB', sort: 20000 },
-      { _id: 'WynbxDC89Wp0PODY', sort: 30000 },
-    ]));
+    expect(updateEmbeddedDocuments.mock.calls[0][1]).toEqual(
+      expect.arrayContaining([
+        { _id: 'L1PmYKzM0AkYtFKB', sort: 20000 },
+        { _id: 'WynbxDC89Wp0PODY', sort: 30000 },
+      ]),
+    );
   });
 
   it('does not call updateEmbeddedDocuments if there are no changes', async () => {
@@ -67,14 +72,17 @@ describe('sortActorItems()', () => {
     calculateItemSorts.mockReturnValue(mockCalculatedItemSorts);
 
     const updateEmbeddedDocuments = jest.fn<Promise<unknown>, unknown[]>().mockResolvedValue(undefined);
-    const actor = mockActor([
-      mockItem({ id: '9i6tT2SYxq5Xegzu', sort: 10000, name: 'A', type: 'feat', system: {} }),
-      mockItem({ id: 'WynbxDC89Wp0PODY', sort: 30000, name: 'C', type: 'feat', system: {} }),
-      mockItem({ id: 'L1PmYKzM0AkYtFKB', sort: 20000, name: 'B', type: 'feat', system: {} }),
-    ], {
-      id: 'Y2QQKpkeZCHalka0',
-      updateEmbeddedDocuments,
-    });
+    const actor = mockActor(
+      [
+        mockItem({ id: '9i6tT2SYxq5Xegzu', sort: 10000, name: 'A', type: 'feat', system: {} }),
+        mockItem({ id: 'WynbxDC89Wp0PODY', sort: 30000, name: 'C', type: 'feat', system: {} }),
+        mockItem({ id: 'L1PmYKzM0AkYtFKB', sort: 20000, name: 'B', type: 'feat', system: {} }),
+      ],
+      {
+        id: 'Y2QQKpkeZCHalka0',
+        updateEmbeddedDocuments,
+      },
+    );
 
     await sortActorItems(actor);
 
@@ -91,14 +99,17 @@ describe('sortActorItems()', () => {
     calculateItemSorts.mockReturnValue(mockCalculatedItemSorts);
 
     const updateEmbeddedDocuments = jest.fn<Promise<unknown>, unknown[]>().mockRejectedValue('mock rejection');
-    const actor = mockActor([
-      mockItem({ id: '9i6tT2SYxq5Xegzu', sort: 10000, name: 'A', type: 'feat', system: {} }),
-      mockItem({ id: 'WynbxDC89Wp0PODY', sort: 20000, name: 'C', type: 'feat', system: {} }),
-      mockItem({ id: 'L1PmYKzM0AkYtFKB', sort: 30000, name: 'B', type: 'feat', system: {} }),
-    ], {
-      id: 'Y2QQKpkeZCHalka0',
-      updateEmbeddedDocuments,
-    });
+    const actor = mockActor(
+      [
+        mockItem({ id: '9i6tT2SYxq5Xegzu', sort: 10000, name: 'A', type: 'feat', system: {} }),
+        mockItem({ id: 'WynbxDC89Wp0PODY', sort: 20000, name: 'C', type: 'feat', system: {} }),
+        mockItem({ id: 'L1PmYKzM0AkYtFKB', sort: 30000, name: 'B', type: 'feat', system: {} }),
+      ],
+      {
+        id: 'Y2QQKpkeZCHalka0',
+        updateEmbeddedDocuments,
+      },
+    );
 
     await sortActorItems(actor);
 

@@ -1,4 +1,4 @@
-import { ItemSort } from './calculateItemSorts';
+import type { ItemSort } from './calculateItemSorts';
 
 let delayedActorSort: jest.SpiedFunction<typeof import('./delayedActorSort').default>;
 let calculateItemSorts: jest.SpiedFunction<typeof import('./calculateItemSorts').default>;
@@ -7,20 +7,11 @@ let LegacySortFeatsByRequirement: typeof import('../settings').LegacySortFeatsBy
 let forEachOpenSheet: jest.SpiedFunction<typeof import('../forEachOpenSheet').default>;
 
 beforeAll(async () => {
-  delayedActorSort = jest.spyOn(
-    await import('./delayedActorSort'),
-    'default',
-  ).mockReturnValue();
+  delayedActorSort = jest.spyOn(await import('./delayedActorSort'), 'default').mockReturnValue();
 
-  calculateItemSorts = jest.spyOn(
-    await import('./calculateItemSorts'),
-    'default',
-  ).mockReturnValue(new Map());
+  calculateItemSorts = jest.spyOn(await import('./calculateItemSorts'), 'default').mockReturnValue(new Map());
 
-  hasActorBeenSorted = jest.spyOn(
-    await import('./sortActorItems'),
-    'hasActorBeenSorted',
-  ).mockReturnValue(false);
+  hasActorBeenSorted = jest.spyOn(await import('./sortActorItems'), 'hasActorBeenSorted').mockReturnValue(false);
 
   forEachOpenSheet = jest.spyOn(await import('../forEachOpenSheet'), 'default').mockImplementation(() => undefined);
 

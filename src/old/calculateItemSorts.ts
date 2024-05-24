@@ -1,8 +1,8 @@
 import extractSortInformation from './extractSortInformation';
 
 export type ItemSort = {
-  _id: string
-  sort: number
+  _id: string;
+  sort: number;
 };
 
 const calculateItemSorts = (actor: dnd5e.documents.Actor5e | null) => {
@@ -10,7 +10,7 @@ const calculateItemSorts = (actor: dnd5e.documents.Actor5e | null) => {
   if (actor) {
     const sortedItems = extractSortInformation(actor.items);
     let nextSort = 0;
-    let lastGroup = null;
+    let lastGroup: string | null = null;
     for (const item of sortedItems) {
       if (item.group !== lastGroup) {
         nextSort = 0;

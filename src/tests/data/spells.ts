@@ -1,4 +1,3 @@
-
 // Cantrips
 export const acidSplash = {
   id: 'Mm16rr1GdNu7OD1z',

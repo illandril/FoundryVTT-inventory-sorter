@@ -1,24 +1,15 @@
-import { ItemSort } from './calculateItemSorts';
+import type { ItemSort } from './calculateItemSorts';
 
 let delayedActorSort: jest.SpiedFunction<typeof import('./delayedActorSort').default>;
 let calculateItemSorts: jest.SpiedFunction<typeof import('./calculateItemSorts').default>;
 let hasActorBeenSorted: jest.SpiedFunction<typeof import('./sortActorItems').hasActorBeenSorted>;
 
 beforeAll(async () => {
-  delayedActorSort = jest.spyOn(
-    await import('./delayedActorSort'),
-    'default',
-  ).mockReturnValue();
+  delayedActorSort = jest.spyOn(await import('./delayedActorSort'), 'default').mockReturnValue();
 
-  calculateItemSorts = jest.spyOn(
-    await import('./calculateItemSorts'),
-    'default',
-  ).mockReturnValue(new Map());
+  calculateItemSorts = jest.spyOn(await import('./calculateItemSorts'), 'default').mockReturnValue(new Map());
 
-  hasActorBeenSorted = jest.spyOn(
-    await import('./sortActorItems'),
-    'hasActorBeenSorted',
-  ).mockReturnValue(false);
+  hasActorBeenSorted = jest.spyOn(await import('./sortActorItems'), 'hasActorBeenSorted').mockReturnValue(false);
 
   SIMULATE.mockSavedSetting('illandril-inventory-sorter', 'enableLegacySorter', false);
 

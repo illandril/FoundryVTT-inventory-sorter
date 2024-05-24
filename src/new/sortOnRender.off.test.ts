@@ -15,7 +15,7 @@ it('does not attempt to sort when sheet is rendered', () => {
 
   const sheet = {
     actor: {},
-    element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
 
   Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -29,7 +29,7 @@ it('does not attempt to sort when settings are changed', () => {
 
   const sheet = {
     actor: {},
-    element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
   jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
     callback(sheet);

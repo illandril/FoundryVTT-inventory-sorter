@@ -1,4 +1,5 @@
-import SheetItemFinder, { ItemNode, ItemSection } from './SheetItemFinder';
+import type SheetItemFinder from './SheetItemFinder';
+import type { ItemNode, ItemSection } from './SheetItemFinder';
 
 const GenericSheetHelper: SheetItemFinder = (sheetElem) => {
   const sections: ItemSection[] = [];

@@ -1,5 +1,5 @@
 import { LegacySortFeatsByRequirement } from '../settings';
-import sortItems, { ItemSortDetails, SortedItemDetails } from './sortItems';
+import sortItems, { type ItemSortDetails, type SortedItemDetails } from './sortItems';
 
 const getSpellSubtype = (system: dnd5e.documents.ItemSystemData.Spell) => {
   const prepMode = system.preparation?.mode;
@@ -28,7 +28,9 @@ const getFeatSortDetails = (system: dnd5e.documents.ItemSystemData.Feat) => {
   return { subtype, alternateSort };
 };
 
-const extractSortInformation = (items: foundry.utils.Collection<string, dnd5e.documents.Item5e>): SortedItemDetails[] => {
+const extractSortInformation = (
+  items: foundry.utils.Collection<string, dnd5e.documents.Item5e>,
+): SortedItemDetails[] => {
   if (!items) {
     return [];
   }

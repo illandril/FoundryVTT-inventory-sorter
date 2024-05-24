@@ -4,15 +4,9 @@ let EnableLegacySorter: typeof import('../settings').EnableLegacySorter;
 let forEachOpenSheet: jest.SpiedFunction<typeof import('../forEachOpenSheet').default>;
 
 beforeAll(async () => {
-  delayedActorSort = jest.spyOn(
-    await import('./delayedActorSort'),
-    'default',
-  ).mockReturnValue();
+  delayedActorSort = jest.spyOn(await import('./delayedActorSort'), 'default').mockReturnValue();
 
-  hasActorBeenSorted = jest.spyOn(
-    await import('./sortActorItems'),
-    'hasActorBeenSorted',
-  ).mockReturnValue(false);
+  hasActorBeenSorted = jest.spyOn(await import('./sortActorItems'), 'hasActorBeenSorted').mockReturnValue(false);
 
   forEachOpenSheet = jest.spyOn(await import('../forEachOpenSheet'), 'default').mockImplementation(() => undefined);
 

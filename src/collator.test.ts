@@ -25,7 +25,6 @@ it.each([
   [-1, '2', '10'],
   [1, '20', '10'],
 
-
   // Alpha + Numeric sorts
   [0, 'Bard 1', 'Bard 1'],
   [-1, 'Bard 1', 'Bard 2'],

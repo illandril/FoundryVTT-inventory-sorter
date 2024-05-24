@@ -1,6 +1,6 @@
 import module from '../module';
-import { AnyItemSortOption, typeBasedSorting } from '../settings';
-import Decorator from './Decorator';
+import { type AnyItemSortOption, typeBasedSorting } from '../settings';
+import type Decorator from './Decorator';
 import getTarget from './getTarget';
 import getUsage from './getUsage';
 

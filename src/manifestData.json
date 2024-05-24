@@ -1,14 +1,10 @@
 {
   "compatibility": {
     "minimum": 10,
-    "verified": 11
+    "verified": 12
   },
-  "esmodules": [
-    "module.js"
-  ],
-  "styles": [
-    "styles.css"
-  ],
+  "esmodules": ["module.js"],
+  "styles": ["styles.css"],
   "languages": [
     {
       "lang": "en",
@@ -18,13 +14,13 @@
   ],
   "relationships": {
     "systems": [
-        {
-          "id": "dnd5e",
-          "type": "system",
-          "compatibility": {
-            "verified": "2.2.1"
-          }
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "verified": "3.2.0"
         }
+      }
     ]
   },
   "license": "LICENSE",

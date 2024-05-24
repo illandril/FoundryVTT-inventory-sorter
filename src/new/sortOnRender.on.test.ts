@@ -1,5 +1,11 @@
 import forEachOpenSheet from '../forEachOpenSheet';
-import { FallbackAsSpecificSetting, FeatureFallback, InventoryFallback, SpecificSetting, typeBasedSorting } from '../settings';
+import {
+  type FallbackAsSpecificSetting,
+  FeatureFallback,
+  InventoryFallback,
+  type SpecificSetting,
+  typeBasedSorting,
+} from '../settings';
 import { mockActor, mockItem } from '../tests/mockHelpers';
 import './sortOnRender';
 
@@ -41,7 +47,7 @@ it('attempts to sort when sheet is rendered (sheet without item-lists)', () => {
 
   const sheet = {
     actor: {},
-    element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
 
   Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -56,7 +62,7 @@ it('attempts to sort when settings are changed (sheet without item-lists)', () =
 
   const sheet = {
     actor: {},
-    element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
   jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
     callback(sheet);
@@ -87,67 +93,85 @@ describe('sheetPrefs update', () => {
 
     const sheet = {
       actor: {},
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
     jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
       callback(sheet);
     });
 
-    Hooks.callAll('updateUser', { id: 'mock-user-id' } as User, {
-      flags: {
-        dnd5e: {
-          sheetPrefs: {
-            character: {
-              tabs: {
-                inventory: {
-                  group: true,
+    Hooks.callAll(
+      'updateUser',
+      { id: 'mock-user-id' } as User,
+      {
+        flags: {
+          dnd5e: {
+            sheetPrefs: {
+              character: {
+                tabs: {
+                  inventory: {
+                    group: true,
+                  },
                 },
               },
             },
           },
         },
-      },
-    } as object, {}, 'mock-user-id');
+      } as object,
+      {},
+      'mock-user-id',
+    );
     await jest.runAllTimersAsync();
 
     expect(element.querySelectorAll).toHaveBeenCalledTimes(1);
     expect(element.querySelectorAll).toHaveBeenCalledWith('.item-list');
 
-    Hooks.callAll('updateUser', { id: 'mock-user-id' } as User, {
-      flags: {
-        dnd5e: {
-          sheetPrefs: {
-            character: {
-              tabs: {
-                inventory: {
-                  group: false,
+    Hooks.callAll(
+      'updateUser',
+      { id: 'mock-user-id' } as User,
+      {
+        flags: {
+          dnd5e: {
+            sheetPrefs: {
+              character: {
+                tabs: {
+                  inventory: {
+                    group: false,
+                  },
                 },
               },
             },
           },
         },
-      },
-    } as object, {}, 'mock-user-id');
+      } as object,
+      {},
+      'mock-user-id',
+    );
     await jest.runAllTimersAsync();
 
     expect(element.querySelectorAll).toHaveBeenCalledTimes(2);
     expect(element.querySelectorAll).toHaveBeenCalledWith('.item-list');
 
-    Hooks.callAll('updateUser', { id: 'mock-user-id' } as User, {
-      flags: {
-        dnd5e: {
-          sheetPrefs: {
-            character: {
-              tabs: {
-                features: {
-                  group: false,
+    Hooks.callAll(
+      'updateUser',
+      { id: 'mock-user-id' } as User,
+      {
+        flags: {
+          dnd5e: {
+            sheetPrefs: {
+              character: {
+                tabs: {
+                  features: {
+                    group: false,
+                  },
                 },
               },
             },
           },
         },
-      },
-    } as object, {}, 'mock-user-id');
+      } as object,
+      {},
+      'mock-user-id',
+    );
     await jest.runAllTimersAsync();
 
     expect(element.querySelectorAll).toHaveBeenCalledTimes(3);
@@ -160,19 +184,25 @@ describe('sheetPrefs update', () => {
 
     const sheet = {
       actor: {},
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
     jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
       callback(sheet);
     });
 
-    Hooks.callAll('updateUser', { id: 'mock-user-id' } as User, {
-      flags: {
-        dnd5e: {
-          whatever: true,
+    Hooks.callAll(
+      'updateUser',
+      { id: 'mock-user-id' } as User,
+      {
+        flags: {
+          dnd5e: {
+            whatever: true,
+          },
         },
-      },
-    } as object, {}, 'mock-user-id');
+      } as object,
+      {},
+      'mock-user-id',
+    );
     await jest.runAllTimersAsync();
 
     expect(element.querySelectorAll).toHaveBeenCalledTimes(0);
@@ -184,40 +214,45 @@ describe('sheetPrefs update', () => {
 
     const sheet = {
       actor: {},
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
     jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
       callback(sheet);
     });
 
-    Hooks.callAll('updateUser', { id: 'mock-other-id' } as User, {
-      flags: {
-        dnd5e: {
-          sheetPrefs: {
-            character: {
-              tabs: {
-                inventory: {
-                  group: true,
+    Hooks.callAll(
+      'updateUser',
+      { id: 'mock-other-id' } as User,
+      {
+        flags: {
+          dnd5e: {
+            sheetPrefs: {
+              character: {
+                tabs: {
+                  inventory: {
+                    group: true,
+                  },
                 },
               },
             },
           },
         },
-      },
-    } as object, {}, 'mock-id');
+      } as object,
+      {},
+      'mock-id',
+    );
     await jest.runAllTimersAsync();
 
     expect(element.querySelectorAll).toHaveBeenCalledTimes(0);
   });
 });
 
-
 it('does not attempt to sort when sheet has no actor', () => {
   const element = document.createElement('div');
   jest.spyOn(element, 'querySelectorAll');
 
   const sheet = {
-    element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
   jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
     callback(sheet);
@@ -234,8 +269,7 @@ it('does not attempt to sort when sheet has no element', () => {
 
   const sheet = {
     actor: {},
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    element: { get: (index: number) => undefined } as JQuery<HTMLElement>,
+    element: { get: (_index: number) => undefined } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
   jest.mocked(forEachOpenSheet).mockImplementation((callback) => {
     callback(sheet);
@@ -289,7 +323,7 @@ it('gracefully handles items w/o id', () => {
 
   const sheet = {
     actor,
-    element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
 
   Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -345,7 +379,7 @@ it('gracefully handles items w/o associated data', () => {
 
   const sheet = {
     actor,
-    element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+    element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
   } as ActorSheet<dnd5e.documents.Actor5e>;
 
   Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -424,7 +458,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -488,7 +522,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -552,7 +586,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -616,7 +650,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -679,7 +713,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -693,14 +727,7 @@ describe.each([
   });
 });
 
-describe.each([
-  'weapon',
-  'equipment',
-  'consumable',
-  'tool',
-  'backpack',
-  'loot',
-] as const)('type=%s', (type) => {
+describe.each(['weapon', 'equipment', 'consumable', 'tool', 'backpack', 'loot'] as const)('type=%s', (type) => {
   it('supports weight_asc sorting', () => {
     typeBasedSorting[type].setPrimary('weight_asc');
     const actor = mockActor([
@@ -764,7 +791,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -840,7 +867,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -916,7 +943,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -992,7 +1019,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1064,7 +1091,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1136,7 +1163,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1217,7 +1244,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1298,7 +1325,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1312,9 +1339,7 @@ describe.each([
   });
 });
 
-describe.each([
-  'feat',
-] as const)('type=%s', (type) => {
+describe.each(['feat'] as const)('type=%s', (type) => {
   it('supports requirements_asc sorting', () => {
     typeBasedSorting[type].setPrimary('requirements_asc');
     const actor = mockActor([
@@ -1374,7 +1399,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1446,7 +1471,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1530,7 +1555,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1614,7 +1639,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1628,9 +1653,7 @@ describe.each([
   });
 });
 
-describe.each([
-  'spell',
-] as const)('type=%s', (type) => {
+describe.each(['spell'] as const)('type=%s', (type) => {
   it('supports school_asc sorting', () => {
     typeBasedSorting[type].setPrimary('school_asc');
     const actor = mockActor([
@@ -1690,7 +1713,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1762,7 +1785,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1842,7 +1865,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -1922,7 +1945,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -2006,7 +2029,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -2090,7 +2113,7 @@ describe.each([
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as ActorSheet<dnd5e.documents.Actor5e>;
 
     Hooks.callAll('renderActorSheet', sheet, {} as JQuery<HTMLElement>);
@@ -2158,9 +2181,9 @@ describe('container sheets', () => {
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as Application & {
-      actor: dnd5e.documents.Actor5e
+      actor: dnd5e.documents.Actor5e;
     };
 
     Hooks.callAll('renderContainerSheet', sheet, {} as JQuery<HTMLElement>);
@@ -2224,9 +2247,9 @@ describe('container sheets', () => {
 
     const sheet = {
       actor,
-      element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+      element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
     } as Application & {
-      actor: dnd5e.documents.Actor5e
+      actor: dnd5e.documents.Actor5e;
     };
 
     Hooks.callAll('renderContainerSheet', sheet, {} as JQuery<HTMLElement>);

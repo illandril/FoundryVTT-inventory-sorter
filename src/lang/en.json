@@ -45,7 +45,7 @@
       "sortInventoryBackpacksSecondary.label": "Backpacks Secondary Sort",
       "sortInventoryLootPrimary.label": "Loot Primary Sort",
       "sortInventoryLootSecondary.label": "Loot Secondary Sort",
-      
+
       "sortFeaturesFallbackPrimary": {
         "label": "Features Primary Sort",
         "hint": "The default Primary Sort for the Features tab categories (Race, Background, Classes, and Abilities)"

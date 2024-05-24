@@ -2,17 +2,17 @@ import collator from '../collator';
 import forEachOpenSheet from '../forEachOpenSheet';
 import module from '../module';
 import { EnableLegacySorter, registerSettingCallback } from '../settings';
-import Decorator from './Decorator';
+import type Decorator from './Decorator';
 import decorators from './decorators';
 import { itemFinders } from './moduleSupport';
-import { ItemNode } from './moduleSupport/SheetItemFinder';
+import type { ItemNode } from './moduleSupport/SheetItemFinder';
 
 const mapItemNode = (actor: dnd5e.documents.Actor5e, itemNode: ItemNode, index: number) => {
   const item = actor.items.get(itemNode.id);
   return {
     ...itemNode,
     sorts: [
-      ...decorators.map((decorator) => item ? decorator(item) : null),
+      ...decorators.map((decorator) => (item ? decorator(item) : null)),
 
       // Fallback to the manually defined sort if everything is the same
       { value: `${item?.sort || ''}`, isDesc: false },
@@ -83,7 +83,7 @@ Hooks.on('renderContainerSheet', (containerSheet) => {
 
 declare global {
   interface HookCallbacks {
-    'tidy5e-sheet.renderActorSheet': (sheet: ActorSheet<dnd5e.documents.Actor5e>) => void
+    'tidy5e-sheet.renderActorSheet': (sheet: ActorSheet<dnd5e.documents.Actor5e>) => void;
   }
 }
 

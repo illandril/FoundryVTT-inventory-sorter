@@ -1,4 +1,10 @@
-import { FallbackAsSpecificSetting, FeatureFallback, InventoryFallback, SpecificSetting, typeBasedSorting } from '../../settings';
+import {
+  type FallbackAsSpecificSetting,
+  FeatureFallback,
+  InventoryFallback,
+  type SpecificSetting,
+  typeBasedSorting,
+} from '../../settings';
 import { mockActor, mockItem } from '../../tests/mockHelpers';
 import '../sortOnRender';
 
@@ -66,10 +72,7 @@ describe.each(['tidy5e-sheet', 'tidy5e-kgar'])('tidy5e-kgar alpha layout > .%s',
       </section>`,
     ],
   ])('Mode: %s', (mode, html) => {
-    describe.each([
-      'renderActorSheet',
-      'tidy5e-sheet.renderActorSheet',
-    ] as const)('on %j', (hook) => {
+    describe.each(['renderActorSheet', 'tidy5e-sheet.renderActorSheet'] as const)('on %j', (hook) => {
       describe.each([
         'weapon',
         'equipment',
@@ -158,7 +161,7 @@ describe.each(['tidy5e-sheet', 'tidy5e-kgar'])('tidy5e-kgar alpha layout > .%s',
 
           const sheet = {
             actor,
-            element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+            element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
           } as ActorSheet<dnd5e.documents.Actor5e>;
 
           Hooks.callAll(hook, sheet, {} as JQuery<HTMLElement>);
@@ -268,7 +271,7 @@ describe.each(['tidy5e-sheet', 'tidy5e-kgar'])('tidy5e-kgar alpha layout > .%s',
 
           const sheet = {
             actor,
-            element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+            element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
           } as ActorSheet<dnd5e.documents.Actor5e>;
 
           Hooks.callAll(hook, sheet, {} as JQuery<HTMLElement>);
@@ -356,10 +359,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
       </section>`,
     ],
   ])('Mode: %s', (mode, html) => {
-    describe.each([
-      'renderActorSheet',
-      'tidy5e-sheet.renderActorSheet',
-    ] as const)('on %j', (hook) => {
+    describe.each(['renderActorSheet', 'tidy5e-sheet.renderActorSheet'] as const)('on %j', (hook) => {
       describe.each([
         'weapon',
         'equipment',
@@ -456,7 +456,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
 
           const sheet = {
             actor,
-            element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+            element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
           } as ActorSheet<dnd5e.documents.Actor5e>;
 
           Hooks.callAll(hook, sheet, {} as JQuery<HTMLElement>);
@@ -571,7 +571,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
 
           const sheet = {
             actor,
-            element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+            element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
           } as ActorSheet<dnd5e.documents.Actor5e>;
 
           Hooks.callAll(hook, sheet, {} as JQuery<HTMLElement>);
@@ -645,10 +645,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
       </section>`,
     ],
   ])('Mode: %s (empty list)', (mode, html) => {
-    describe.each([
-      'renderActorSheet',
-      'tidy5e-sheet.renderActorSheet',
-    ] as const)('on %j', (hook) => {
+    describe.each(['renderActorSheet', 'tidy5e-sheet.renderActorSheet'] as const)('on %j', (hook) => {
       describe.each([
         'weapon',
         'equipment',
@@ -729,7 +726,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
 
           const sheet = {
             actor,
-            element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+            element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
           } as ActorSheet<dnd5e.documents.Actor5e>;
 
           Hooks.callAll(hook, sheet, {} as JQuery<HTMLElement>);
@@ -812,7 +809,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
 
           const sheet = {
             actor,
-            element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+            element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
           } as ActorSheet<dnd5e.documents.Actor5e>;
 
           Hooks.callAll(hook, sheet, {} as JQuery<HTMLElement>);
@@ -874,10 +871,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
       </section>`,
     ],
   ])('Mode: %s (without footer)', (mode, html) => {
-    describe.each([
-      'renderActorSheet',
-      'tidy5e-sheet.renderActorSheet',
-    ] as const)('on %j', (hook) => {
+    describe.each(['renderActorSheet', 'tidy5e-sheet.renderActorSheet'] as const)('on %j', (hook) => {
       describe.each([
         'weapon',
         'equipment',
@@ -972,7 +966,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
 
           const sheet = {
             actor,
-            element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+            element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
           } as ActorSheet<dnd5e.documents.Actor5e>;
 
           Hooks.callAll(hook, sheet, {} as JQuery<HTMLElement>);
@@ -1083,7 +1077,7 @@ describe('tidy5e-sheet 2.0.0-beta.4 layout > .tidy5e-sheet', () => {
 
           const sheet = {
             actor,
-            element: { get: (index: number) => index === 0 ? element : undefined } as JQuery<HTMLElement>,
+            element: { get: (index: number) => (index === 0 ? element : undefined) } as JQuery<HTMLElement>,
           } as ActorSheet<dnd5e.documents.Actor5e>;
 
           Hooks.callAll(hook, sheet, {} as JQuery<HTMLElement>);

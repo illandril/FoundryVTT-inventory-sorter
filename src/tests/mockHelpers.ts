@@ -1,9 +1,9 @@
 type MockItem = {
-  id: string
-  name: string
-  type: string
-  system: dnd5e.documents.ItemSystemData.Any
-  sort?: number
+  id: string;
+  name: string;
+  type: string;
+  system: dnd5e.documents.ItemSystemData.Any;
+  sort?: number;
 };
 
 export const mockItem = (item: MockItem) => item as dnd5e.documents.Item5e;

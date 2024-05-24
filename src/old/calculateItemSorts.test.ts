@@ -54,8 +54,17 @@ describe('calculateItemSorts()', () => {
   });
 
   describe.each([
-    'background', 'backpack', 'class', 'consumable', 'equipment',
-    'feat', 'loot', 'spell', 'subclass', 'tool', 'weapon',
+    'background',
+    'backpack',
+    'class',
+    'consumable',
+    'equipment',
+    'feat',
+    'loot',
+    'spell',
+    'subclass',
+    'tool',
+    'weapon',
   ])('type=%s', (type) => {
     it('includes each item id as _id', () => {
       const actor = mockActor([

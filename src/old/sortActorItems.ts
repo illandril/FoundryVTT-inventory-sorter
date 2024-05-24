@@ -1,6 +1,6 @@
 import module from '../module';
 import { registerLegacySettingCallback } from '../settings';
-import calculateItemSorts from './calculateItemSorts';
+import calculateItemSorts, { type ItemSort } from './calculateItemSorts';
 
 const sortedActors = new Set<string>();
 
@@ -12,7 +12,7 @@ const sortActorItems = async (actor: dnd5e.documents.Actor5e) => {
   sortedActors.add(actor.id);
 
   const itemSorts = calculateItemSorts(actor);
-  const itemUpdates = [];
+  const itemUpdates: ItemSort[] = [];
   for (const itemSort of itemSorts.values()) {
     const item = actor.items.get(itemSort._id) as dnd5e.documents.Item5e;
     if (item.sort !== itemSort.sort) {

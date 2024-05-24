@@ -1,4 +1,3 @@
-
 const forEachOpenSheet = (callback: (sheet: ActorSheet<dnd5e.documents.Actor5e>) => void) => {
   if (!ui?.windows) {
     return;

@@ -6,7 +6,6 @@ import delayedActorSort from './delayedActorSort';
 import getTypedActor from './getTypedActor';
 import { hasActorBeenSorted } from './sortActorItems';
 
-
 const onItemChange = (item: Item, userId: string) => {
   if (!EnableLegacySorter.get()) {
     // Legacy sort is off - nothing for us to do
