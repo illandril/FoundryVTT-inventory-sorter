@@ -37,7 +37,7 @@
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.24.1",
     "@babel/preset-env": "^7.24.8",
-    "@babel/preset-typescript": "^7.24.1",
+    "@babel/preset-typescript": "^7.24.7",
     "@illandril/biome-config": "^1.2.0",
     "@illandril/foundryvtt-types": "^6.19.1",
     "@rollup/plugin-babel": "^6.0.4",
